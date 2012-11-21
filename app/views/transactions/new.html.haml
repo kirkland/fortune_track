@@ -1,0 +1,12 @@
+%h1 New Transaction
+
+= semantic_form_for @transaction do |f|
+  %p= f.input :description, as: :string
+  %p= f.input :date
+  %a{href: '#', onclick: "addLineItem()"} Add Line Item
+  %p= f.submit
+
+- content_for :js do
+  :plain
+    console.log("start");
+    console.log("end");

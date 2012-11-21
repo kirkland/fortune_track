@@ -1,4 +1,6 @@
 class Transaction < ActiveRecord::Base
+  attr_accessible  :description, :date
+
   has_many :line_items, dependent: :destroy
 
   validate :debits_equals_credits
