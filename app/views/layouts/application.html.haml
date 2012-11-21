@@ -6,7 +6,8 @@
       Personal Accounting
     = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag "application"
-    = javascript_tag "$(document).ready(function() { #{yield :js}; });"
+    = javascript_tag(yield :js)
+    = javascript_tag "$(document).ready(function() { #{yield :ready_js}; });"
     = csrf_meta_tags
   %body
     = yield
