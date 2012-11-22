@@ -8,6 +8,7 @@ class TransactionsController < ApplicationController
   end
 
   def create
+    render :text => params.inspect and return
     @transaction = Transaction.new(params[:transaction])
 
     if @transaction.save

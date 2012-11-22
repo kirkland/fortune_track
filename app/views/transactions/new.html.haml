@@ -7,10 +7,12 @@
   %p= f.submit
 
 #line_item_fields{ style: 'display: none' }
-  = semantic_fields_for LineItem.new do |f|
-    = f.input :debit_in_cents
-    = f.input :credit_in_cents
-    = f.input :account
+  %label Debit in Cents
+  %input{name: 'transaction[line_items][][debit_in_cents]', type: 'number'}
+  %label Credit in Cents
+  %input{name: 'transaction[line_items][][credit_in_cents]', type: 'number'}
+  = select_tag 'transaction[line_items][][account_id]',
+    options_from_collection_for_select(Account.all, 'id', 'full_name')
 
 - content_for :js do
   :plain
