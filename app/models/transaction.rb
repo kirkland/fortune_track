@@ -1,7 +1,8 @@
 class Transaction < ActiveRecord::Base
-  attr_accessible  :description, :date
+  attr_accessible  :description, :date, :line_items
 
-  has_many :line_items, dependent: :destroy
+  has_many :line_items, dependent: :destroy, inverse_of: :transaction
+#  accepts_nested_attributes_for :line_items
 
   validate :debits_equals_credits
 
