@@ -3,11 +3,19 @@
 = semantic_form_for @transaction do |f|
   %p= f.input :description, as: :string
   %p= f.input :date
-  %a{href: '#', onclick: "addLineItem()"} Add Line Item
+  %a#add_line_item{href: '#', onclick: "addLineItem()"} Add Line Item
   %p= f.submit
+
+#line_item_fields{ style: 'display: none' }
+  = semantic_fields_for LineItem.new do |f|
+    = f.input :debit_in_cents
+    = f.input :credit_in_cents
+    = f.input :account
 
 - content_for :js do
   :plain
     function addLineItem() {
-      console.log("whoa");
+      var newLineItem = $('#line_item_fields').clone();
+      newLineItem.insertBefore($('#add_line_item'));
+      newLineItem.show();
     }
