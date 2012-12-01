@@ -1,5 +1,5 @@
 class LineItem < ActiveRecord::Base
-  attr_accessible :credit_in_cents, :debit_in_cents, :account_id
+  attr_accessible :credit_in_cents, :debit_in_cents, :account_id, :debit, :credit
 
   belongs_to :transaction
   belongs_to :account
@@ -11,6 +11,22 @@ class LineItem < ActiveRecord::Base
 
   before_validation do
     set_defaults
+  end
+
+  def credit
+    credit_in_cents.to_f / 100
+  end
+
+  def credit=(amount)
+    self.credit_in_cents = amount.to_f * 100
+  end
+
+  def debit
+    debit_in_cents.to_f / 100
+  end
+
+  def debit=(amount)
+    self.debit_in_cents = amount.to_f * 100
   end
 
   private
