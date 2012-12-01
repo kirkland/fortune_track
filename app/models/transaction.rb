@@ -1,7 +1,7 @@
 class Transaction < ActiveRecord::Base
   attr_accessible  :description, :date
 
-  has_many :line_items, dependent: :destroy, inverse_of: :transaction
+  has_many :line_items, dependent: :destroy, inverse_of: :transaction, order: 'id ASC'
 
   validate :debits_equals_credits
 
