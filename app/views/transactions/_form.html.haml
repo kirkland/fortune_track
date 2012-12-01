@@ -1,0 +1,16 @@
+= semantic_form_for @transaction do |f|
+  %p= f.input :description, as: :string
+  %p= f.input :date
+  = render partial: 'line_item', collection: @transaction.line_items
+  %a#add_line_item{href: '#', onclick: "addLineItem()"} Add Line Item
+  %p= f.submit
+
+= render 'line_item', line_item_div_id: 'line_item_fields', style: 'display: none', line_item: LineItem.new
+
+- content_for :js do
+  :plain
+    function addLineItem() {
+      var newLineItem = $('#line_item_fields').clone();
+      newLineItem.insertBefore($('#add_line_item'));
+      newLineItem.show();
+    }

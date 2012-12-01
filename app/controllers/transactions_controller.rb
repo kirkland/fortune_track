@@ -3,6 +3,10 @@ class TransactionsController < ApplicationController
     @transactions = Transaction.all
   end
 
+  def edit
+    @transaction = Transaction.find(params[:id])
+  end
+
   def new
     @transaction = Transaction.new
   end
@@ -31,5 +35,24 @@ class TransactionsController < ApplicationController
       render :text => @transaction.errors.inspect and return
       render :new
     end
+  end
+
+  def update
+    line_items_attrs = params[:transaction].delete(:line_items) || []
+    @transaction = Transaction.find(params[:id])
+
+    @transaction.update_attributes(params[:transaction])
+
+    line_items_attrs.each do |line_item_attr|
+      if line_item_attr[:id].present?
+        li = LineItem.find(line_item_attr.delete :id)
+      else
+        li = @transaction.line_items.new
+      end
+
+      li.update_attributes(line_item_attr)
+    end
+
+    redirect_to edit_transaction_path(@transaction)
   end
 end
