@@ -64,10 +64,11 @@ class TransactionsController < ApplicationController
       end
     end
 
-    if !@transaction.valid?
+    if @transaction.valid?
+      redirect_to edit_transaction_path(@transaction)
+    else
       flash[:error] = @transaction.errors.inspect
+      render :edit
     end
-
-    redirect_to edit_transaction_path(@transaction)
   end
 end
