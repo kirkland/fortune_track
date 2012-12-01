@@ -12,8 +12,6 @@ class TransactionsController < ApplicationController
   end
 
   def create
-#    render :text => params.inspect and return
-
     line_items_attrs = params[:transaction].delete(:line_items) if params[:transaction][:line_items].present?
     line_items_attrs ||= []
 
@@ -29,16 +27,14 @@ class TransactionsController < ApplicationController
 
     if @transaction.save
       flash[:message] = 'Transaction created.'
-      redirect_to transactions_path
+      redirect_to edit_transaction_path(@transaction)
     else
       flash[:error] = 'Error in transaction create.'
-      render :text => @transaction.errors.inspect and return
       render :new
     end
   end
 
   def update
-#    render :json => params and return
     @transaction = Transaction.find(params[:id])
 
     line_items_attributes = params[:transaction].delete(:line_items) || []
