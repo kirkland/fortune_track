@@ -10,5 +10,6 @@
     = javascript_tag "$(document).ready(function() { #{yield :ready_js}; });"
     = csrf_meta_tags
   %body
-    = flash[:error].inspect
+    - if flash[:error].present?
+      = flash[:error].inspect
     = yield

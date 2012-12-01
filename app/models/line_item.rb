@@ -9,7 +9,7 @@ class LineItem < ActiveRecord::Base
   validates_presence_of :account
   validates_presence_of :transaction
 
-  before_validation on: :create do
+  before_validation do
     set_defaults
   end
 
