@@ -5,5 +5,5 @@
   %label Credit in Cents
   %input{name: 'transaction[line_items][][credit_in_cents]', type: 'number', value: line_item.credit_in_cents}
   = select_tag 'transaction[line_items][][account_id]',
-    options_from_collection_for_select(Account.all, 'id', 'full_name')
+    options_from_collection_for_select(Account.all, 'id', 'full_name', line_item.account_id)
 

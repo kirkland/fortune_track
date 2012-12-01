@@ -48,6 +48,7 @@ class TransactionsController < ApplicationController
         if attr[:id].present?
           li = @transaction.line_items.find(attr[:id])
           li.assign_attributes(attr)
+          li.account_id = attr[:account_id]
           li.save!
         else
           @transaction.line_items.create(attr)
