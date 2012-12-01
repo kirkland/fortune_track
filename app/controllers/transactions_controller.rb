@@ -38,19 +38,33 @@ class TransactionsController < ApplicationController
   end
 
   def update
-    line_items_attrs = params[:transaction].delete(:line_items) || []
+#    render :json => params and return
     @transaction = Transaction.find(params[:id])
 
-    @transaction.update_attributes(params[:transaction])
+    line_items_attributes = params[:transaction].delete(:line_items) || []
 
-    line_items_attrs.each do |line_item_attr|
-      if line_item_attr[:id].present?
-        li = LineItem.find(line_item_attr.delete :id)
-      else
-        li = @transaction.line_items.new
+    ActiveRecord::Base.transaction do
+      line_items_attributes.each do |attr|
+        if attr[:id].present?
+          li = @transaction.line_items.find(attr[:id])
+          li.assign_attributes(attr)
+          li.save!
+        else
+          @transaction.line_items.create(attr)
+        end
+
       end
 
-      li.update_attributes(line_item_attr)
+      @transaction.update_attributes(params[:transaction])
+
+      if !@transaction.valid?
+        flash[:error] = @transaction.errors.inspect
+        raise ActiveRecord::Rollback
+      end
+    end
+
+    if !@transaction.valid?
+      flash[:error] = @transaction.errors.inspect
     end
 
     redirect_to edit_transaction_path(@transaction)
