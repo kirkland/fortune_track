@@ -1,4 +1,4 @@
-.transaction
+.transactions
   %table.main
     %tr
       %th Description
@@ -11,14 +11,4 @@
             %th Account
             %th Debit
             %th Credit
-    %tr
-      %td
-        %span.date= "#{display_date @transaction.date}:"
-        %span.description= @transaction.description.presence || '(no description)'
-      %td
-        %table.line_items
-          - @transaction.line_items.each do |line_item|
-            %tr
-              %td= line_item.account.name
-              %td= line_item.debit
-              %td= line_item.credit
+    = render 'transaction'

@@ -1,26 +1,16 @@
-%h1 Transactions
-
-- @transactions.each do |t|
-  %p
-    ID:
-    = t.id
-    %br/
-    Date:
-    = t.date
-    %br/
-    Description:
-    = t.description
-    %table
-      %thead
-        %tr
-          %th Account
-          %th Debit
-          %th Credit
-      %tbody
-        - t.line_items.each do |li|
+.transactions
+  %table.main
+    %tr
+      %th Description
+      %th Line Items
+    %tr
+      %th
+      %th
+        %table.line_items_header
           %tr
-            %td= li.account.full_name
-            %td= li.debit_in_cents
-            %td= li.credit_in_cents
+            %th Account
+            %th Debit
+            %th Credit
+    = render partial: 'transaction', collection: @transactions
 
 = link_to 'New Transaction', new_transaction_path
