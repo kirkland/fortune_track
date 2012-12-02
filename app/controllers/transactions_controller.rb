@@ -11,6 +11,10 @@ class TransactionsController < ApplicationController
     @transaction = Transaction.new
   end
 
+  def show
+    @transaction = Transaction.find(params[:id])
+  end
+
   def create
     line_items_attrs = params[:transaction].delete(:line_items) if params[:transaction][:line_items].present?
     line_items_attrs ||= []

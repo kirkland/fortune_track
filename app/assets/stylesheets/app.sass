@@ -9,3 +9,21 @@ ol
 
 li
   list-style-type: none
+
+.transaction
+  .date
+    font-weight: bold
+  .description
+    margin-left: 10px
+  table
+    width: 100%
+    th
+      font-weight: bold
+    td, th
+      border: 1px black solid
+    &.main
+      td
+        width: 50%
+    &.line_items, &.line_items_header
+      td, th
+        width: 33%
