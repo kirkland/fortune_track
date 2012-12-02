@@ -1,7 +1,7 @@
 = semantic_form_for @transaction do |f|
   %p= f.input :description, as: :string
   %p= f.input :date
-  = render partial: 'line_item', collection: @transaction.line_items
+  = render partial: 'line_item', collection: @line_items || @transaction.line_items
   %a#add_line_item{href: '#', onclick: "addLineItem()"} Add Line Item
   %p= f.submit
 
@@ -13,4 +13,16 @@
       var newLineItem = $('#line_item_fields').clone();
       newLineItem.insertBefore($('#add_line_item'));
       newLineItem.show();
+    }
+
+    function deleteLineItem(target) {
+      var fields = $(target).closest('div');
+      if ( fields.find('.line_item_id').val() === '' ) {
+        // New record.
+        console.log("new record");
+        fields.remove();
+      } else {
+        fields.find('.deleted').val(true);
+        fields.hide();
+      }
     }

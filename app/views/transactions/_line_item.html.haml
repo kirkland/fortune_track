@@ -1,9 +1,10 @@
 %div{ id: line_item_div_id ||= '', style: style ||= '' }
-  %input{ type: 'hidden', name: 'transaction[line_items][][id]', value: line_item.id }
+  %input.line_item_id{ type: 'hidden', name: 'transaction[line_items][][id]', value: line_item.id }
+  %input.deleted{ type: 'hidden', name: 'transaction[line_items][][deleted]' }
   %label Debit
   %input{name: 'transaction[line_items][][debit]', type: 'number', value: line_item.debit}
   %label Credit
   %input{name: 'transaction[line_items][][credit]', type: 'number', value: line_item.credit}
   = select_tag 'transaction[line_items][][account_id]',
     options_from_collection_for_select(Account.all, 'id', 'full_name', line_item.account_id)
-
+  = link_to 'delete', '#', class: 'delete_item', onclick: 'deleteLineItem(this)'

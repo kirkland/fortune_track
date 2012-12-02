@@ -39,17 +39,25 @@ class TransactionsController < ApplicationController
 
     line_items_attributes = params[:transaction].delete(:line_items) || []
 
+    new_line_items = []
+
     ActiveRecord::Base.transaction do
       line_items_attributes.each do |attr|
         if attr[:id].present?
           li = @transaction.line_items.find(attr[:id])
-          li.assign_attributes(attr)
-          li.account_id = attr[:account_id]
-          li.save!
+          deleted = attr.delete(:deleted)
+           if deleted.present?
+            li.destroy
+          else
+            li.assign_attributes(attr)
+            li.account_id = attr[:account_id]
+            li.save!
+          end
         else
-          @transaction.line_items.create(attr)
+          attr.delete(:id)
+          attr.delete(:deleted)
+          new_line_items << @transaction.line_items.create(attr)
         end
-
       end
 
       @transaction.update_attributes(params[:transaction])
@@ -63,6 +71,11 @@ class TransactionsController < ApplicationController
     if @transaction.valid?
       redirect_to edit_transaction_path(@transaction)
     else
+      # Magic. Necessary to 'undelete' attempted deletions.
+      # For some reason, @transaction.line_items.reload doesn't do the trick.
+      @transaction.line_items(true)
+      @line_items = @transaction.line_items + new_line_items
+
       flash[:error] = @transaction.errors.inspect
       render :edit
     end
