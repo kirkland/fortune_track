@@ -42,6 +42,10 @@ module AccountParsers
 
         @transactions << Transaction.new(date, description, category, amount, unique_id)
       end
+
+      @b.close
+
+      @transactions
     end
 
     private
