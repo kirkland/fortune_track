@@ -15,4 +15,4 @@
 /tmp
 *.swp
 *.sassc
-account_credentials.yml
+credentials.yml

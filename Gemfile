@@ -8,6 +8,7 @@ gem 'jquery-rails'
 gem 'formtastic'
 gem 'nokogiri'
 gem 'money'
+gem 'crack'
 gem 'ap'
 gem 'watir-webdriver'
 
