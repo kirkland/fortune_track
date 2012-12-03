@@ -6,6 +6,10 @@ gem 'haml-rails'
 gem 'pg'
 gem 'jquery-rails'
 gem 'formtastic'
+gem 'nokogiri'
+gem 'money'
+gem 'ap'
+gem 'watir-webdriver'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

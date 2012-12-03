@@ -1,6 +1,4 @@
 module AccountParsers
-  class Transaction < Struct.new(:date, :description, :category, :amount, :unique_id); end
-
   class CapitalOne
     attr_accessor :transactions
 
