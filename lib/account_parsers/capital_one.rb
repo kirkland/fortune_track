@@ -9,9 +9,8 @@ module AccountParsers
     def get_transactions
       @transactions = []
 
-      credentials = YAML.load(File.open('./credentials.yml'))
-      username = credentials['username']
-      password = credentials['password']
+      username = Credentials['capital_one']['username']
+      password = Credentials['capital_one']['password']
 
       @b = Watir::Browser.new :chrome
 
