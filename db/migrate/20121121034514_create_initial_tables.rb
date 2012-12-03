@@ -2,6 +2,7 @@ class CreateInitialTables < ActiveRecord::Migration
   def change
     create_table :accounts do |t|
       t.text :name
+      t.text :full_name
       t.integer :parent_account_id
 
       t.timestamps

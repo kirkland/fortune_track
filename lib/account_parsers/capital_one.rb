@@ -48,11 +48,30 @@ module AccountParsers
       @transactions
     end
 
+    def build_transaction(transaction)
+      t = ::Transaction.new
+      t.description = transaction.description
+      t.date = transaction.date
+
+      capital_one = Account.find_or_create_with_hierarchy 'Liabilities:Credit Card:Capital One'
+      unknown_asset = Account.find_or_create_with_hierarchy 'Asset:Unknown'
+      uncategorized_expense = Account.find_or_create_with_hierarchy 'Expense:Uncategorized'
+
+      amount = transaction.amount.cents
+      if transaction.category == 'Payment'
+        t.line_items.build(debit_in_cents: amount, account: capital_one)
+        t.line_items.build(credit_in_cents: amount, account: unknown_asset)
+      else
+        t.line_items.build(debit_in_cents: amount, account: uncategorized_expense)
+        t.line_items.build(credit_in_cents: amount, account: capital_one)
+      end
+    end
+
     private
 
     def parse_date(date_string)
       month, day, year = date_string.split('/')
-      Time.parse("#{year}-#{month}-#{day}")
+      Date.parse("#{year}-#{month}-#{day}")
     end
 
   end
