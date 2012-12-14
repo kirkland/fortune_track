@@ -1,0 +1,5 @@
+.account
+  = account.name
+  .child_accounts
+    - account.child_accounts.each do |child|
+      = render child
