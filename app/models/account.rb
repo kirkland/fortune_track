@@ -7,6 +7,14 @@ class Account < ActiveRecord::Base
 
   before_save :update_related_full_names!
 
+  def credit_balance
+    line_items.all.sum(&:credit)
+  end
+
+  def debit_balance
+    line_items.all.sum(&:debit)
+  end
+
   def self.find_or_create_with_hierarchy(full_name)
     parts = full_name.split(':')
   end

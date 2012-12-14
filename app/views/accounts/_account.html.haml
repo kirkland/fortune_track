@@ -1,5 +1,8 @@
 .account
-  = account.name
+  .balance
+    = account.name
+    = account.debit_balance
+    = account.credit_balance
   .child_accounts
     - account.child_accounts.each do |child|
       = render child
