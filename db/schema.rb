@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(:version => 20121121034514) do
 
   create_table "accounts", :force => true do |t|
     t.text     "name"
+    t.text     "full_name"
     t.integer  "parent_account_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
