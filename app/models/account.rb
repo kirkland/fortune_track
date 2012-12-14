@@ -7,16 +7,16 @@ class Account < ActiveRecord::Base
 
   before_save :update_related_full_names!
 
+  def self.find_or_create_with_hierarchy(full_name)
+    parts = full_name.split(':')
+  end
+
   def update_full_name
     if parent_account_id.present?
       self.full_name = "#{parent_account.full_name}:#{name}"
     else
       self.full_name = name
     end
-  end
-
-  def self.find_or_create_with_hierarchy(full_name)
-    parts = full_name.split(':')
   end
 
   def update_related_full_names!
