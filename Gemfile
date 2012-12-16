@@ -11,6 +11,7 @@ gem 'money'
 gem 'crack'
 gem 'ap'
 gem 'watir-webdriver'
+gem 'pry'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
