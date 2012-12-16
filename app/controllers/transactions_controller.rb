@@ -16,25 +16,34 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    line_items_attrs = params[:transaction].delete(:line_items) if params[:transaction][:line_items].present?
-    line_items_attrs ||= []
+    line_items_attributes = params[:transaction].delete(:line_items) || []
+    new_line_items = []
 
-    @transaction = Transaction.new(params[:transaction])
+    ActiveRecord::Base.transaction do
+      @transaction = Transaction.new(params[:transaction])
 
-    line_items_attrs.each do |line_item_attr|
-       li = LineItem.new
-       li.debit_in_cents = line_item_attr[:debit_in_cents].to_i
-       li.credit_in_cents = line_item_attr[:credit_in_cents].to_i
-       li.account_id = line_item_attr[:account_id].to_i
-       @transaction.line_items << li
+      line_items_attributes.each do |attr|
+        attr.delete(:id)
+        attr.delete(:deleted)
+        new_line_items << @transaction.line_items.build(attr)
+      end
+
+      if !@transaction.save
+        flash[:error] = @transaction.errors.inspect
+        raise ActiveRecord::Rollback
+      end
     end
 
-    if @transaction.save
-      flash[:message] = 'Transaction created.'
-      redirect_to edit_transaction_path(@transaction)
+    if @transaction.valid?
+      redirect_to transactions_path
     else
-      flash[:error] = 'Error in transaction create.'
-      render :new
+      # Magic. Necessary to 'undelete' attempted deletions.
+      # For some reason, @transaction.line_items.reload doesn't do the trick.
+      @transaction.line_items(true)
+      @line_items = new_line_items
+
+      flash[:error] = @transaction.errors.inspect
+      render :edit
     end
   end
 

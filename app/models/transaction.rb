@@ -24,7 +24,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def validates_has_line_item
-    if line_items.count == 0
+    if line_items.length == 0
       errors.add(:line_items, 'must have at least one line item')
     end
   end
