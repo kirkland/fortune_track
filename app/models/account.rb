@@ -15,6 +15,10 @@ class Account < ActiveRecord::Base
     line_items.all.sum(&:debit)
   end
 
+  def depth
+    parent_account_id.blank? ? 0 : 1 + parent_account.depth
+  end
+
   def self.find_or_create_with_hierarchy(full_name)
     parts = full_name.split(':')
   end

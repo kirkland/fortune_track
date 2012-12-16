@@ -1,4 +1,10 @@
 %h1 Accounts
 
-- @accounts.each do |account|
-  = render account
+%table.accounts
+  %tr
+    %th Account
+    %th Debit
+    %th Credit
+
+  - @accounts.each do |account|
+    = render account
