@@ -1,4 +1,4 @@
-%div{ id: line_item_div_id ||= '', style: style ||= '' }
+%div.line_item{ id: line_item_div_id ||= '', style: style ||= '' }
   %input.line_item_id{ type: 'hidden', name: 'transaction[line_items][][id]', value: line_item.id }
   %input.deleted{ type: 'hidden', name: 'transaction[line_items][][deleted]' }
   %label Debit
