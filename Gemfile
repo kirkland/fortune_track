@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'ap'
 gem 'crack'
+gem 'factory_girl', '4.1.0'
 gem 'formtastic'
 gem 'haml-rails'
 gem 'jquery-rails'
