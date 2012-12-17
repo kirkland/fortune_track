@@ -1,22 +1,14 @@
-# Assets
-assets = Account.create(name: 'Assets')
-current = Account.create(name: 'Current', parent_account_id: assets.id)
-Account.create(name: 'Cash', parent_account_id: current.id)
+def create_accounts(data, parent_account_id=nil)
+  if data.is_a? String
+    Account.create(name: data, parent_account_id: parent_account_id)
+  else
+    # I think each hash will only ever have one key/value pair.
+    name = data.keys.first
+    child_account_data = data.values.first
+    account = Account.create(name: name, parent_account_id: parent_account_id)
+    child_account_data.each { |x| create_accounts(x, account.id) }
+  end
+end
 
-# Equity
-equity = Account.create(name: 'Equity')
-Account.create(name: 'Opening Balance', parent_account_id: equity.id)
-
-# Expenses
-expenses = Account.create(name: 'Expenses')
-food = Account.create(name: 'Food', parent_account_id: expenses.id)
-Account.create(name: 'Restaurant', parent_account_id: food.id)
-Account.create(name: 'Groceries', parent_account_id: food.id)
-
-# Income
-income = Account.create(name: 'Income')
-Account.create(name: 'Salary', parent_account_id: income.id)
-
-# Liabilities
-liabilities = Account.create(name: 'Liabilities')
-Account.create(name: 'Credit Cards', parent_account_id: liabilities.id)
+data = YAML.load(File.read(File.join(Rails.root, 'db/initial_accounts.yml')))
+data.each { |x| create_accounts(x) }
