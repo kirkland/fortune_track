@@ -10,6 +10,11 @@
     = javascript_tag "$(document).ready(function() { #{yield :ready_js}; });"
     = csrf_meta_tags
   %body
+    #nav
+      %ol
+        %li= link_to 'Accounts', accounts_path
+        %li= link_to 'Transactions', transactions_path
+    .clear
     - if flash[:error].present?
       = flash[:error].inspect
     = yield
