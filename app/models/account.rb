@@ -8,10 +8,18 @@ class Account < ActiveRecord::Base
   before_save :update_related_full_names!
 
   def credit_balance
+    credit_total > debit_total ? credit_total - debit_total : 0
+  end
+
+  def credit_total
     line_items.all.sum(&:credit)
   end
 
   def debit_balance
+    debit_total > credit_total ? debit_total - credit_total : 0
+  end
+
+  def debit_total
     line_items.all.sum(&:debit)
   end
 
