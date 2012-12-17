@@ -1,7 +1,7 @@
 %tr
   %td
     %span.date= "#{display_date transaction.date}:"
-    %span.description= transaction.description.presence || '(no description)'
+    %span.description= link_to (transaction.description.presence || '(no description)'), edit_transaction_path(transaction)
   %td
     %table.line_items
       - transaction.line_items.each do |line_item|
