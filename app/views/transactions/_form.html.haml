@@ -10,7 +10,7 @@
 - content_for :js do
   :plain
     function addLineItem() {
-      var newLineItem = $('#line_item_fields').clone();
+      var newLineItem = $('#line_item_fields').clone().attr('id', '');
       newLineItem.insertBefore($('#add_line_item'));
       newLineItem.show();
     }
