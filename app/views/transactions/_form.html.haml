@@ -1,6 +1,6 @@
 = semantic_form_for @transaction do |f|
   %p= f.input :description, as: :string
-  %p= f.input :date, as: :string
+  %p= f.input :date, as: :string, input_html: { value: @transaction.date.presence || Time.now.to_date }
   = render partial: 'line_item', collection: @line_items || @transaction.line_items
   %a#add_line_item{href: '#', onclick: "addLineItem()"} Add Line Item
   %p= f.submit
