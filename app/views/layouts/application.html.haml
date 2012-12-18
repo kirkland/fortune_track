@@ -14,6 +14,9 @@
       %ol
         %li= link_to 'Accounts', accounts_path
         %li= link_to 'Transactions', transactions_path
+      #net_worth
+        Net Worth:
+        = Account.net_worth
     .clear
     - if flash[:error].present?
       = flash[:error].inspect

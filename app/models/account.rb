@@ -55,6 +55,11 @@ class Account < ActiveRecord::Base
     parts = full_name.split(':')
   end
 
+  def self.net_worth
+    Account.find_by_full_name('Assets').debit_balance_with_children -
+      Account.find_by_full_name('Liabilities').debit_balance_with_children
+  end
+
   def update_full_name
     if parent_account_id.present?
       self.full_name = "#{parent_account.full_name}:#{name}"
