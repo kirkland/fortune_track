@@ -6,6 +6,6 @@
     %table.line_items
       - transaction.line_items.each do |line_item|
         %tr
-          %td= line_item.account.name
+          %td= line_item.account.full_name
           %td= line_item.debit
           %td= line_item.credit
