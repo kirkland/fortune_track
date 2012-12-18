@@ -17,4 +17,6 @@
     .clear
     - if flash[:error].present?
       = flash[:error].inspect
+    - if notice.present?
+      %p#notice= notice
     = yield

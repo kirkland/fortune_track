@@ -5,6 +5,8 @@ class Account < ActiveRecord::Base
   has_many :child_accounts, class_name: 'Account', foreign_key: 'parent_account_id'
   has_many :line_items
 
+  validate :no_parent_cycle
+
   before_save :update_related_full_names!
 
   def balance_type
@@ -66,6 +68,20 @@ class Account < ActiveRecord::Base
       child_accounts.each do |acct|
         acct.update_related_full_names!
         acct.save!
+      end
+    end
+  end
+
+  private
+
+  def no_parent_cycle
+    current = self
+
+    while current = current.parent_account
+      return true if current.nil?
+
+      if current == self
+        errors.add(:parent_account, 'cannot create a cycle in parent accounts')
       end
     end
   end
