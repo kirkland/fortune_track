@@ -16,6 +16,14 @@ data = YAML.load(File.read(File.join(Rails.root, 'db/initial_accounts.yml')))
 data.each { |x| create_accounts(x) }
 
 # Some seed transaction data.
-10.times { FactoryGirl.create(:asset_expense_transaction) }
+cash = Account.where(name: 'Cash').first
+opening = Account.where(name: 'Opening Balance').first
+
+t = FactoryGirl.build(:transaction)
+t.line_items << FactoryGirl.build(:line_item, account: cash, debit_in_cents: 1000_00)
+t.line_items << FactoryGirl.build(:line_item, account: opening, credit_in_cents: 1000_00)
+t.save!
+
+10.times { FactoryGirl.create(:cash_expense_transaction) }
 5.times { FactoryGirl.create(:liability_expense_transaction) }
 2.times { FactoryGirl.create(:income_transaction) }
