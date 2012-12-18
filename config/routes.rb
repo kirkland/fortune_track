@@ -1,5 +1,5 @@
 PersonalAccounting::Application.routes.draw do
-  resources :accounts
+  resources :accounts, except: [:show]
   resources :transactions
 
   root :to => 'accounts#index'
