@@ -1,5 +1,7 @@
-%tr
-  %td{style: "padding-left: #{indent(account)}"}= account.name
+%tr.account_row
+  %td{style: "padding-left: #{indent(account)}"}
+    = account.name
+    = link_to '(Edit)', edit_account_path(account)
   %td= account.debit_balance_with_children
   %td= account.credit_balance_with_children
 
