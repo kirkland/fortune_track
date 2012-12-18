@@ -7,25 +7,25 @@ FactoryGirl.define do
 
     factory :cash_expense_transaction do
       after :build do |t|
-        amount = rand(1000)
-        t.line_items << build(:expense_line_item, debit_in_cents: amount)
-        t.line_items << build(:cash_line_item, credit_in_cents: amount)
+        amount = rand(10)
+        t.line_items << build(:expense_line_item, debit: amount.to_money)
+        t.line_items << build(:cash_line_item, credit: amount.to_money)
       end
     end
 
     factory :liability_expense_transaction do
       after :build do |t|
-        amount = rand(1000)
-        t.line_items << build(:expense_line_item, debit_in_cents: amount)
-        t.line_items << build(:liability_line_item, credit_in_cents: amount)
+        amount = rand(10)
+        t.line_items << build(:expense_line_item, debit: amount.to_money)
+        t.line_items << build(:liability_line_item, credit: amount.to_money)
       end
     end
 
     factory :income_transaction do
       after :build do |t|
-        amount = rand(1000)
-        t.line_items << build(:asset_line_item, debit_in_cents: amount)
-        t.line_items << build(:income_line_item, credit_in_cents: amount)
+        amount = rand(10)
+        t.line_items << build(:asset_line_item, debit: amount.to_money)
+        t.line_items << build(:income_line_item, credit: amount.to_money)
       end
     end
   end

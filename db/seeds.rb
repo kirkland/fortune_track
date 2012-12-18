@@ -20,8 +20,8 @@ cash = Account.where(name: 'Cash').first
 opening = Account.where(name: 'Opening Balance').first
 
 t = FactoryGirl.build(:transaction)
-t.line_items << FactoryGirl.build(:line_item, account: cash, debit_in_cents: 1000_00)
-t.line_items << FactoryGirl.build(:line_item, account: opening, credit_in_cents: 1000_00)
+t.line_items << FactoryGirl.build(:line_item, account: cash, debit: 1000.to_money)
+t.line_items << FactoryGirl.build(:line_item, account: opening, credit: 1000.to_money)
 t.save!
 
 10.times { FactoryGirl.create(:cash_expense_transaction) }
