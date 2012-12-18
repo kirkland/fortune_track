@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121218040255) do
+ActiveRecord::Schema.define(:version => 20121218100754) do
 
   create_table "accounts", :force => true do |t|
     t.text     "name"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20121218040255) do
     t.integer  "parent_account_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.string   "parser_class"
   end
 
   create_table "line_items", :force => true do |t|
