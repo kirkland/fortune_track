@@ -1,7 +1,7 @@
 %tr
   %td{style: "padding-left: #{indent(account)}"}= account.name
-  %td= account.debit_balance
-  %td= account.credit_balance
+  %td= account.debit_balance_with_children
+  %td= account.credit_balance_with_children
 
 
 - account.child_accounts.each do |child|

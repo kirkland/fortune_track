@@ -7,20 +7,40 @@ class Account < ActiveRecord::Base
 
   before_save :update_related_full_names!
 
+  def balance_type
+    credit_total > debit_total ? :credit : :debit
+  end
+
   def credit_balance
-    credit_total > debit_total ? credit_total - debit_total : 0
+    balance_type == :credit ? credit_total - debit_total : 0.to_money
+  end
+
+  def credit_balance_with_children
+    credit_total_with_children > debit_total_with_children ? credit_total_with_children - debit_total_with_children : 0.to_money
   end
 
   def credit_total
-    line_items.all.sum(&:credit)
+    line_items.all.sum(&:credit).to_money
+  end
+
+  def credit_total_with_children
+    credit_total + child_accounts.sum(&:credit_total_with_children).to_money
   end
 
   def debit_balance
-    debit_total > credit_total ? debit_total - credit_total : 0
+    balance_type == :debit ? debit_total - credit_total : 0.to_money
+  end
+
+  def debit_balance_with_children
+    debit_total_with_children > credit_total_with_children ? debit_total_with_children - credit_total_with_children : 0.to_money
+  end
+
+  def debit_total_with_children
+    debit_total + child_accounts.sum(&:debit_total_with_children).to_money
   end
 
   def debit_total
-    line_items.all.sum(&:debit)
+    line_items.all.sum(&:debit).to_money
   end
 
   def depth
