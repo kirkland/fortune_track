@@ -1,7 +1,9 @@
 .account_row
   .name
     .indent{style: "padding-left: #{indent(account)}"}
-      %span.expander= link_to '+', '#'
+      -if account.has_children?
+        %span.toggler.shower= link_to '+', '#'
+        %span.toggler.hider= link_to '-', '#'
       = account.name
       %span.edit= link_to '(Edit)', edit_account_path(account)
   .debit= account.debit_balance_with_children

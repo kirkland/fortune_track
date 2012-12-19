@@ -14,6 +14,6 @@
 
 -content_for :ready_js do
   :plain
-    $('.expander').click(function(event) {
-      $(event.target).closest('.account_row').children('.account_row').hide();
+    $('.toggler').click(function(event) {
+      $(event.target).closest('.account_row').toggleClass('hide_children');
     });
