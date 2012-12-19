@@ -7,5 +7,5 @@
   .debit= account.debit_balance_with_children
   .credit= account.credit_balance_with_children
 
-- account.child_accounts.each do |child|
-  = render child
+  - account.child_accounts.each do |child|
+    = render child

@@ -9,10 +9,11 @@
   - @accounts.each do |account|
     = render account
 
+.clear
 %p{style: 'margin-top: 30px'}=link_to 'New Account', new_account_path
 
 -content_for :ready_js do
   :plain
     $('.expander').click(function(event) {
-      console.log(event.target);
+      $(event.target).closest('.account_row').children('.account_row').hide();
     });
