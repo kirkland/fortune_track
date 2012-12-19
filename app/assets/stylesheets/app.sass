@@ -47,15 +47,6 @@ th
       td, th
         width: 33%
 
-.accounts
-  tr
-    >td
-      width: 300px
-
-.account_row
-  .edit a
-    font-size: 8px
-
 #net_worth
   float: left
   font-weight: bold
@@ -65,3 +56,19 @@ th
   display: block
   text-align: center
   padding-top: 8px
+
+#accounts
+  .account_row
+    &.header
+      font-weight: bold
+    clear: both
+    div
+      float: left
+    .name
+      width: 400px
+      .edit a
+        font-size: 8px
+    .debit
+      width: 200px
+    .credit
+      width: 200px

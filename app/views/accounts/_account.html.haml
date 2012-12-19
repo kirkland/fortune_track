@@ -1,11 +1,11 @@
-%tr.account_row
-  %td{style: "padding-left: #{indent(account)}"}
-    %span.expander= link_to '+', '#'
-    = account.name
-    %span.edit= link_to '(Edit)', edit_account_path(account)
-  %td= account.debit_balance_with_children
-  %td= account.credit_balance_with_children
-
+.account_row
+  .name
+    .indent{style: "padding-left: #{indent(account)}"}
+      %span.expander= link_to '+', '#'
+      = account.name
+      %span.edit= link_to '(Edit)', edit_account_path(account)
+  .debit= account.debit_balance_with_children
+  .credit= account.credit_balance_with_children
 
 - account.child_accounts.each do |child|
   = render child
