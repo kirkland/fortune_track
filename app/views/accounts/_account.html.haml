@@ -1,4 +1,4 @@
-.account_row
+.account_row{ :class => show_children?(account) ? '' : 'hide_children' }
   .name
     .indent{style: "padding-left: #{indent(account)}"}
       -if account.has_children?
