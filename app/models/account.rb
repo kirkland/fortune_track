@@ -64,6 +64,32 @@ class Account < ActiveRecord::Base
       Account.find_by_full_name('Liabilities').debit_balance_with_children
   end
 
+  def self.populate_sort_order
+    Account.where(sort_order: nil).each do |account|
+      sort_order = 1
+
+      already_sorted = account.siblings.where('sort_order IS NOT NULL')
+      if already_sorted.present?
+        sort_order = already_sorted.collect(&:sort_order).sort.first + 1
+      end
+
+      account.sort_order = sort_order
+      account.save!
+    end
+  end
+
+  def siblings
+    siblings_with_self.where("id != ?", id)
+  end
+
+  def siblings_with_self
+    if parent_account_id.nil?
+      Account.where(parent_account_id: nil)
+    else
+      parent_account.child_accounts
+    end
+  end
+
   def update_full_name
     if parent_account_id.present?
       self.full_name = "#{parent_account.full_name}:#{name}"
