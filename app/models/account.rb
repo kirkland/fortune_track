@@ -1,7 +1,7 @@
 class Account < ActiveRecord::Base
   PARSERS = [AccountParsers::CapitalOne]
 
-  attr_accessible :name, :parent_account_id, :parser_class
+  attr_accessible :name, :parent_account_id, :parser_class, :sort_order
 
   belongs_to :parent_account, class_name: 'Account'
   has_many :child_accounts, class_name: 'Account', foreign_key: 'parent_account_id'
@@ -112,8 +112,13 @@ class Account < ActiveRecord::Base
 
   private
 
-  def compact_sort_order
-    # TODO: makes sure all children accounts are numbered starting at 1, with no gaps
+  def compact_children_sort_order
+    index = 1
+    child_accounts.order(:sort_order).each do |account|
+      account.sort_order = index
+      account.save!
+      index += 1
+    end
   end
 
   def no_parent_cycle
@@ -144,8 +149,10 @@ class Account < ActiveRecord::Base
         end
       end
     elsif parent_account_id_changed?
-      parent_account.compact_sort_order
       self.sort_order = siblings.count + 1
+
+      # Make sure old parent hierarchy stays in a consistent state.
+      Account.find(parent_account_was).compact_children_sort_order
     end
   end
 end
