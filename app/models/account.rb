@@ -16,6 +16,15 @@ class Account < ActiveRecord::Base
     credit_total > debit_total ? :credit : :debit
   end
 
+  def compact_children_sort_order
+    index = 1
+    child_accounts.order(:sort_order).each do |account|
+      account.sort_order = index
+      account.save!
+      index += 1
+    end
+  end
+
   def credit_balance
     balance_type == :credit ? credit_total - debit_total : 0.to_money
   end
@@ -112,15 +121,6 @@ class Account < ActiveRecord::Base
 
   private
 
-  def compact_children_sort_order
-    index = 1
-    child_accounts.order(:sort_order).each do |account|
-      account.sort_order = index
-      account.save!
-      index += 1
-    end
-  end
-
   def no_parent_cycle
     current = self
 
@@ -137,22 +137,19 @@ class Account < ActiveRecord::Base
     if sort_order_changed?
       moved_up = sort_order < sort_order_was
 
+      # Use update_all to avoid after_save callbacks on other accounts.
       if moved_up
-        siblings.where('sort_order >= ? AND sort_order < ?', sort_order, sort_order_was).each do |account|
-          account.sort_order = account.sort_order + 1
-          account.save!
-        end
+        siblings.where('sort_order >= ? AND sort_order < ?', sort_order, sort_order_was)
+          .update_all('sort_order = sort_order + 1')
       else
-        siblings.where('sort_order <= ? AND sort_order > ?', sort_order, sort_order_was).each do |account|
-          account.sort_order = account.sort_order - 1
-          account.save!
-        end
+        siblings.where('sort_order <= ? AND sort_order > ?', sort_order, sort_order_was)
+          .update_all('sort_order = sort_order - 1')
       end
     elsif parent_account_id_changed?
       self.sort_order = siblings.count + 1
 
       # Make sure old parent hierarchy stays in a consistent state.
-      Account.find(parent_account_was).compact_children_sort_order
+      Account.find(parent_account_id_was).compact_children_sort_order
     end
   end
 end
