@@ -1,6 +1,10 @@
 class TransactionsController < ApplicationController
   def index
     @transactions = Transaction.order('date DESC')
+
+    if params[:account_id].present?
+      @transactions = @transactions.all.select{|x| x.line_items.any?{|l| l.account_id == params[:account_id].to_i}}
+    end
   end
 
   def edit
