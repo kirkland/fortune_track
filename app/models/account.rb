@@ -68,9 +68,9 @@ class Account < ActiveRecord::Base
     Account.where(sort_order: nil).each do |account|
       sort_order = 1
 
-      already_sorted = account.siblings.where('sort_order IS NOT NULL')
+      already_sorted = account.reload.siblings.where('sort_order IS NOT NULL')
       if already_sorted.present?
-        sort_order = already_sorted.collect(&:sort_order).sort.first + 1
+        sort_order = already_sorted.collect(&:sort_order).sort.last + 1
       end
 
       account.sort_order = sort_order

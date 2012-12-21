@@ -6,7 +6,7 @@
     .debit Debit
     .credit Credit
 
-  - @accounts.each do |account|
+  - @accounts.order(:sort_order).each do |account|
     = render account
 
 .clear

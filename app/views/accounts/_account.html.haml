@@ -9,5 +9,5 @@
   .debit= account.debit_balance_with_children
   .credit= account.credit_balance_with_children
 
-  - account.child_accounts.each do |child|
+  - account.child_accounts.order(:sort_order).each do |child|
     = render child

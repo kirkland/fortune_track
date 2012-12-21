@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   def index
-    @accounts = Account.where(parent_account_id: nil).all
+    @accounts = Account.where(parent_account_id: nil)
   end
 
   def new
