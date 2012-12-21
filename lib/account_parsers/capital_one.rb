@@ -1,14 +1,12 @@
 module AccountParsers
   class CapitalOne
-    attr_accessor :transactions
+    attr_accessor :raw_data, :transactions
 
     def initialize
       @transactions = []
     end
 
-    def get_transactions
-      @transactions = []
-
+    def download_data
       username = Credentials['capital_one']['username']
       password = Credentials['capital_one']['password']
 
@@ -24,7 +22,18 @@ module AccountParsers
 
       @b.select(name: 'ddlQuickView').select('Last 90 Days')
 
-      @n = Nokogiri::HTML(@b.html)
+      @raw_data = @b.html
+
+      @b.close
+
+      @raw_data
+    end
+
+    def parse_transactions
+      raise 'You must download data or read from a file before parsing it.' if @raw_data.blank?
+
+      @n = Nokogiri::HTML @raw_data
+
       @rows = @n.css('tr.trxSummayRow')
 
       @rows.each do |row|
@@ -40,31 +49,27 @@ module AccountParsers
         # listed twice.
         unique_id = "#{date}:#{description}:#{category}:#{amount}"
 
-        @transactions << Transaction.new(date, description, category, amount, unique_id)
-      end
+        transaction = Transaction.new
+        transaction.date = date
+        transaction.description = description
 
-      @b.close
+        liability= transaction.line_items.build
+        liability.account = Account.all.detect{|x| x.full_name =~ /Liabilities:.*Capital One/}
+        liability.credit_amount = amount
+
+        expense = transaction.line_items.build
+        expense.account = Account.all.detect{|x| x.full_name =~ /^Expenses:.*Uncategorized/}
+        expense.debit_amount = amount
+
+        @transactions << transaction
+      end
 
       @transactions
     end
 
-    def build_transaction(transaction)
-      t = ::Transaction.new
-      t.description = transaction.description
-      t.date = transaction.date
-
-      capital_one = Account.find_or_create_with_hierarchy 'Liabilities:Credit Card:Capital One'
-      unknown_asset = Account.find_or_create_with_hierarchy 'Asset:Unknown'
-      uncategorized_expense = Account.find_or_create_with_hierarchy 'Expense:Uncategorized'
-
-      amount = transaction.amount.cents
-      if transaction.category == 'Payment'
-        t.line_items.build(debit_in_cents: amount, account: capital_one)
-        t.line_items.build(credit_in_cents: amount, account: unknown_asset)
-      else
-        t.line_items.build(debit_in_cents: amount, account: uncategorized_expense)
-        t.line_items.build(credit_in_cents: amount, account: capital_one)
-      end
+    def read_data_from_file(filename=nil)
+      filename = File.join(Rails.root, 'notes/sample_data/capital_one.html') if filename.nil?
+      @raw_data = File.read(filename)
     end
 
     private
@@ -73,6 +78,5 @@ module AccountParsers
       month, day, year = date_string.split('/')
       Date.parse("#{year}-#{month}-#{day}")
     end
-
   end
 end

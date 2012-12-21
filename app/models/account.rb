@@ -135,7 +135,7 @@ class Account < ActiveRecord::Base
 
   def update_siblings_sort_order
     if sort_order_changed?
-      moved_up = sort_order < sort_order_was
+      moved_up = sort_order < sort_order_was.to_i
 
       # Use update_all to avoid after_save callbacks on other accounts.
       if moved_up
@@ -149,7 +149,7 @@ class Account < ActiveRecord::Base
       self.sort_order = siblings.count + 1
 
       # Make sure old parent hierarchy stays in a consistent state.
-      Account.find(parent_account_id_was).compact_children_sort_order
+      Account.find(parent_account_id_was).compact_children_sort_order if parent_account_id_was.present?
     end
   end
 end
