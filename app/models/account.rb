@@ -10,6 +10,7 @@ class Account < ActiveRecord::Base
   validate :no_parent_cycle
 
   before_save :update_related_full_names!
+  before_save :update_siblings_sort_order
 
   def balance_type
     credit_total > debit_total ? :credit : :debit
@@ -111,6 +112,10 @@ class Account < ActiveRecord::Base
 
   private
 
+  def compact_sort_order
+    # TODO: makes sure all children accounts are numbered starting at 1, with no gaps
+  end
+
   def no_parent_cycle
     current = self
 
@@ -120,6 +125,27 @@ class Account < ActiveRecord::Base
       if current == self
         errors.add(:parent_account, 'cannot create a cycle in parent accounts')
       end
+    end
+  end
+
+  def update_siblings_sort_order
+    if sort_order_changed?
+      moved_up = sort_order < sort_order_was
+
+      if moved_up
+        siblings.where('sort_order >= ? AND sort_order < ?', sort_order, sort_order_was).each do |account|
+          account.sort_order = account.sort_order + 1
+          account.save!
+        end
+      else
+        siblings.where('sort_order <= ? AND sort_order > ?', sort_order, sort_order_was).each do |account|
+          account.sort_order = account.sort_order - 1
+          account.save!
+        end
+      end
+    elsif parent_account_id_changed?
+      parent_account.compact_sort_order
+      self.sort_order = siblings.count + 1
     end
   end
 end
