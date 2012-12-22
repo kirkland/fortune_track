@@ -69,6 +69,20 @@ class Account < ActiveRecord::Base
     child_accounts.count > 0
   end
 
+  def import_transactions
+    return unless parser_class.present?
+
+    p = parser_class.constantize.new
+    p.read_data_from_file # TODO: Should actually call download_data.
+    transactions = p.parse_transactions
+
+    new_transactions = transactions.reject do |transaction|
+      Transaction.find_by_unique_code(transaction.unique_code)
+    end
+
+    new_transactions.each(&:save!)
+  end
+
   def self.net_worth
     Account.find_by_full_name('Assets').debit_balance_with_children -
       Account.find_by_full_name('Liabilities').debit_balance_with_children
