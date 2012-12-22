@@ -24,11 +24,13 @@
     - Restaurant
     - Snacks
   - Misc
+  - Unknown
 - Income:
   - Salary
   - Rent
   - Credit Card Rewards
   - Misc
+  - Unknown
 - Liabilities:
   - Credit Cards:
     - Capital One
