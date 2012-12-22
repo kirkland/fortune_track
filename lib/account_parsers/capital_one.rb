@@ -56,11 +56,11 @@ module AccountParsers
 
         liability= transaction.line_items.build
         liability.account = Account.all.detect{|x| x.full_name =~ /Liabilities:.*Capital One/}
-        liability.credit_amount = amount
+        liability.credit = amount
 
         expense = transaction.line_items.build
         expense.account = Account.all.detect{|x| x.full_name =~ /^Expenses:.*Uncategorized/}
-        expense.debit_amount = amount
+        expense.debit = amount
 
         @transactions << transaction
       end
