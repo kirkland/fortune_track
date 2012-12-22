@@ -42,7 +42,10 @@ module AccountParsers
         date = parse_date(tds[0].content.strip)
         description = tds[1].content.strip
         category = tds[2].content.strip
-        amount = tds[3].content.strip.sub(/\$/, '').to_money
+        amount_string = tds[3].content.strip.sub(/\$/, '')
+        amount = amount_string.to_money
+
+        payment = amount_string =~ /^\(.*\)$/ ? true : false
 
         # Note: Only dedupe when we're comparing against previously persisted transactions.
         # If we're looking at the web page, we can assume no transactions are mistakenly
@@ -54,13 +57,25 @@ module AccountParsers
         transaction.date = date
         transaction.description = description
 
-        liability= transaction.line_items.build
-        liability.account = Account.all.detect{|x| x.full_name =~ /Liabilities:.*Capital One/}
-        liability.credit = amount
+        if payment
+          liability = transaction.line_items.build
+          liability.account = Account.all.detect{|x| x.full_name =~ /Liabilities:.*Capital One/}
+          liability.debit = amount
 
-        expense = transaction.line_items.build
-        expense.account = Account.all.detect{|x| x.full_name =~ /^Expenses:.*Uncategorized/}
-        expense.debit = amount
+          # We don't know where the payment came from (and it might even be income if it's a reward!),
+          # so it will be up to the user to categorize this.
+          asset = transaction.line_items.build
+          asset.account = Account.find_by_full_name 'Assets:Unknown'
+          asset.credit = amount
+        else
+          liability = transaction.line_items.build
+          liability.account = Account.all.detect{|x| x.full_name =~ /Liabilities:.*Capital One/}
+          liability.credit = amount
+
+          expense = transaction.line_items.build
+          expense.account = Account.all.detect{|x| x.full_name =~ /^Expenses:.*Uncategorized/}
+          expense.debit = amount
+        end
 
         @transactions << transaction
       end
