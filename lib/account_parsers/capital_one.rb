@@ -47,9 +47,10 @@ module AccountParsers
         # Note: Only dedupe when we're comparing against previously persisted transactions.
         # If we're looking at the web page, we can assume no transactions are mistakenly
         # listed twice.
-        unique_id = "#{date}:#{description}:#{category}:#{amount}"
+        unique_code = "#{date}:#{description}:#{category}:#{amount}"
 
         transaction = Transaction.new
+        transaction.unique_code = unique_code
         transaction.date = date
         transaction.description = description
 
