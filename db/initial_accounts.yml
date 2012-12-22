@@ -1,8 +1,21 @@
 - Assets:
-  - Cash
-  - Real Estate
-  - Unknown
+  - Cash:
+    - Wallet
+    - Fireproof Box
+    - Other
+    - Bank of America
+    - Central Bank
+    - ING Direct:
+      - Savings
+      - Checking
+  - Real Estate:
+    - 224 Trapelo
+    - Rubber Trees
   - Misc
+  - Unknown
+  - Owed:
+    - Owie
+    - Ooh
 - Equity:
   - Opening Balance
 - Expenses:
