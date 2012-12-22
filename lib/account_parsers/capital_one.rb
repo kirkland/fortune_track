@@ -1,5 +1,5 @@
 module AccountParsers
-  class CapitalOne
+  class CapitalOne < GenericAccountParser
     attr_accessor :raw_data, :transactions
 
     def initialize
