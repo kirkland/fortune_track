@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121221034053) do
+ActiveRecord::Schema.define(:version => 20121222045810) do
 
   create_table "accounts", :force => true do |t|
     t.text     "name"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20121221034053) do
   create_table "transactions", :force => true do |t|
     t.date "date"
     t.text "description"
+    t.text "unique_code"
   end
 
 end
