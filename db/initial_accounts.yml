@@ -2,6 +2,7 @@
   - Cash
   - Real Estate
   - Unknown
+  - Misc
 - Equity:
   - Opening Balance
 - Expenses:
@@ -9,10 +10,14 @@
     - Groceries
     - Restaurant
     - Snacks
+  - Misc
 - Income:
   - Salary
   - Rent
+  - Credit Card Rewards
+  - Misc
 - Liabilities:
   - Credit Cards:
     - Capital One
     - Amazon
+  - Misc
