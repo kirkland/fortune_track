@@ -4,6 +4,6 @@ module AccountsHelper
   end
 
   def show_children?(account)
-    account.depth < 1
+    true
   end
 end
