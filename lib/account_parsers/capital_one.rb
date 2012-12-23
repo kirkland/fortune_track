@@ -10,36 +10,12 @@ module AccountParsers
       @primary_account ||= Account.all.detect{ |x| x.name =~ /Capital One/ }
     end
 
-    # If the primary_account gets debited, what account should be credited?
-    def debit_secondary_account
-      @debit_secondary_account ||= Account.find_or_create_by_full_name 'Assets:Unknown'
+    def debit_account
+      @debit_account ||= Account.find_or_create_by_full_name 'Expenses:Unknown'
     end
 
-    def credit_secondary_account
-      @credit_secondary_account ||= Account.find_or_create_by_full_name 'Expenses:Unknown'
-    end
-
-    def download_data
-      username = Credentials['capital_one']['username']
-      password = Credentials['capital_one']['password']
-
-      @b = Watir::Browser.new :chrome
-
-      @b.goto 'https://servicing.capitalone.com/C1/Login.aspx'
-      @iframe=@b.frame(id: 'loginframe')
-      @iframe.text_field(name: 'user').set username
-      @iframe.text_field(name: 'password').set password
-      @iframe.button(id: 'cofisso_btn_login').click
-
-      @b.link(text: 'Visa Signature').click
-
-      @b.select(name: 'ddlQuickView').select('Last 90 Days')
-
-      @raw_data = @b.html
-
-      @b.close
-
-      @raw_data
+    def credit_account
+      @credit_account ||= Account.find_or_create_by_full_name 'Assets:Unknown'
     end
 
     def parse_transactions
@@ -77,13 +53,13 @@ module AccountParsers
           debit_line_item.account = primary_account
           debit_line_item.debit = amount
 
-          credit_line_item.account = debit_secondary_account
+          credit_line_item.account = credit_account
           credit_line_item.credit = amount
         else
           credit_line_item.account = primary_account
           credit_line_item.credit = amount
 
-          debit_line_item.account = credit_secondary_account
+          debit_line_item.account = debit_account
           debit_line_item.debit = amount
         end
 
@@ -96,6 +72,29 @@ module AccountParsers
     def read_data_from_file(filename=nil)
       filename = File.join(Rails.root, 'notes/sample_data/capital_one.html') if filename.nil?
       @raw_data = File.read(filename)
+    end
+
+    def download_data
+      username = Credentials['capital_one']['username']
+      password = Credentials['capital_one']['password']
+
+      @b = Watir::Browser.new :chrome
+
+      @b.goto 'https://servicing.capitalone.com/C1/Login.aspx'
+      @iframe=@b.frame(id: 'loginframe')
+      @iframe.text_field(name: 'user').set username
+      @iframe.text_field(name: 'password').set password
+      @iframe.button(id: 'cofisso_btn_login').click
+
+      @b.link(text: 'Visa Signature').click
+
+      @b.select(name: 'ddlQuickView').select('Last 90 Days')
+
+      @raw_data = @b.html
+
+      @b.close
+
+      @raw_data
     end
 
     private
