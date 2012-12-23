@@ -1,5 +1,5 @@
 class Account < ActiveRecord::Base
-  PARSERS = [AccountParsers::CapitalOne, AccountParsers::CentralBank, AccountParsers::ChaseParser, AccountParsers::IngDirectParser]
+  PARSERS = [AccountParsers::CapitalOne, AccountParsers::CentralBank, AccountParsers::ChaseParser, AccountParsers::IngDirectParser, AccountParsers::BankOfAmericaParser]
 
   attr_accessible :name, :parent_account_id, :parser_class, :sort_order
 
