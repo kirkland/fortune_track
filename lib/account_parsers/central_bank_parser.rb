@@ -1,7 +1,7 @@
 require 'csv'
 
 module AccountParsers
-  class CentralBank < GenericAccountParser
+  class CentralBankParser < GenericAccountParser
     def initialize
       @transactions = []
     end
