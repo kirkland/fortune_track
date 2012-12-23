@@ -1,7 +1,7 @@
 .account_row{ :class => show_children?(account) ? '' : 'hide_children' }
   .name
     .indent{style: "padding-left: #{indent(account)}"}
-      -if account.has_children?
+      -if has_visible_children? account
         %span.toggler.shower= link_to '+', '#'
         %span.toggler.hider= link_to '-', '#'
       = account.name
@@ -11,4 +11,5 @@
   .credit= account.credit_balance_with_children
 
   - account.child_accounts.order(:sort_order).each do |child|
-    = render child
+    - if show_account? child
+      = render child

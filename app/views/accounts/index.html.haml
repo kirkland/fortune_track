@@ -7,7 +7,8 @@
     .credit Credit
 
   - @accounts.order(:sort_order).each do |account|
-    = render account
+    - if show_account?(account)
+      = render account
 
 .clear
 %p{style: 'margin-top: 30px'}=link_to 'New Account', new_account_path
