@@ -1,5 +1,5 @@
 class Account < ActiveRecord::Base
-  PARSERS = [AccountParsers::CapitalOne, AccountParsers::CentralBank]
+  PARSERS = [AccountParsers::CapitalOne, AccountParsers::CentralBank, AccountParsers::ChaseParser]
 
   attr_accessible :name, :parent_account_id, :parser_class, :sort_order
 
@@ -80,7 +80,9 @@ class Account < ActiveRecord::Base
       Transaction.find_by_unique_code(transaction.unique_code)
     end
 
-    new_transactions.each(&:save!)
+    new_transactions.each do |t|
+      t.save!
+    end
   end
 
   def self.net_worth
