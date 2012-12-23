@@ -6,6 +6,19 @@ module AccountParsers
       @transactions = []
     end
 
+    def primary_account
+      @primary_account ||= Account.all.detect{ |x| x.name =~ /Capital One/ }
+    end
+
+    # If the primary_account gets debited, what account should be credited?
+    def debit_secondary_account
+      @debit_secondary_account ||= Account.find_or_create_by_full_name 'Assets:Unknown'
+    end
+
+    def credit_secondary_account
+      @credit_secondary_account ||= Account.find_or_create_by_full_name 'Expenses:Unknown'
+    end
+
     def download_data
       username = Credentials['capital_one']['username']
       password = Credentials['capital_one']['password']
@@ -45,7 +58,7 @@ module AccountParsers
         amount_string = tds[3].content.strip.sub(/\$/, '')
         amount = amount_string.to_money
 
-        payment = amount_string =~ /^\(.*\)$/ ? true : false
+        debit = amount_string =~ /^\(.*\)$/ ? true : false
 
         # Note: Only dedupe when we're comparing against previously persisted transactions.
         # If we're looking at the web page, we can assume no transactions are mistakenly
@@ -57,24 +70,21 @@ module AccountParsers
         transaction.date = date
         transaction.description = description
 
-        if payment
-          liability = transaction.line_items.build
-          liability.account = Account.all.detect{|x| x.full_name =~ /Liabilities:.*Capital One/}
-          liability.debit = amount
+        debit_line_item = transaction.line_items.build
+        credit_line_item = transaction.line_items.build
 
-          # We don't know where the payment came from (and it might even be income if it's a reward!),
-          # so it will be up to the user to categorize this.
-          asset = transaction.line_items.build
-          asset.account = Account.find_by_full_name 'Assets:Unknown'
-          asset.credit = amount
+        if debit
+          debit_line_item.account = primary_account
+          debit_line_item.debit = amount
+
+          credit_line_item.account = debit_secondary_account
+          credit_line_item.credit = amount
         else
-          liability = transaction.line_items.build
-          liability.account = Account.all.detect{|x| x.full_name =~ /Liabilities:.*Capital One/}
-          liability.credit = amount
+          credit_line_item.account = primary_account
+          credit_line_item.credit = amount
 
-          expense = transaction.line_items.build
-          expense.account = Account.all.detect{|x| x.full_name =~ /^Expenses:.*Uncategorized/}
-          expense.debit = amount
+          debit_line_item.account = credit_secondary_account
+          debit_line_item.debit = amount
         end
 
         @transactions << transaction
