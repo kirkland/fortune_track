@@ -33,10 +33,6 @@ module AccountParsers
         category = tds[2].content.strip
         amount_string = tds[3].content.strip.sub(/\$/, '')
         amount = amount_string.to_money
-
-        # Note: Only dedupe when we're comparing against previously persisted transactions.
-        # If we're looking at the web page, we can assume no transactions are mistakenly
-        # listed twice.
         unique_code = "#{date}:#{description}:#{category}:#{amount}"
 
         transaction = Transaction.new
