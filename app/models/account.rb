@@ -1,7 +1,7 @@
 class Account < ActiveRecord::Base
   PARSERS = [AccountParsers::CapitalOne, AccountParsers::CentralBank, AccountParsers::ChaseParser, AccountParsers::IngDirectParser, AccountParsers::BankOfAmericaParser]
 
-  attr_accessible :name, :parent_account_id, :parser_class, :sort_order
+  attr_accessible :name, :parent_account, :parent_account_id, :parser_class, :sort_order
 
   belongs_to :parent_account, class_name: 'Account'
   has_many :child_accounts, class_name: 'Account', foreign_key: 'parent_account_id'
@@ -61,8 +61,18 @@ class Account < ActiveRecord::Base
     parent_account_id.blank? ? 0 : 1 + parent_account.depth
   end
 
-  def self.find_or_create_with_hierarchy(full_name)
+  def self.find_or_create_by_full_name(full_name)
+    account = Account.find_by_full_name(full_name)
+    return account if account.present?
+
     parts = full_name.split(':')
+    name = parts.pop
+
+    if parts.length == 0
+      Account.create(name: name)
+    else
+      Account.create(name: name, parent_account: Account.find_or_create_by_full_name(parts.join(':')))
+    end
   end
 
   def has_children?
