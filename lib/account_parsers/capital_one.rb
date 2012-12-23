@@ -34,8 +34,6 @@ module AccountParsers
         amount_string = tds[3].content.strip.sub(/\$/, '')
         amount = amount_string.to_money
 
-        debit = amount_string =~ /^\(.*\)$/ ? true : false
-
         # Note: Only dedupe when we're comparing against previously persisted transactions.
         # If we're looking at the web page, we can assume no transactions are mistakenly
         # listed twice.
@@ -46,21 +44,14 @@ module AccountParsers
         transaction.date = date
         transaction.description = description
 
-        debit_line_item = transaction.line_items.build
-        credit_line_item = transaction.line_items.build
+        debit = amount_string =~ /^\(.*\)$/ ? true : false
 
         if debit
-          debit_line_item.account = primary_account
-          debit_line_item.debit = amount
-
-          credit_line_item.account = credit_account
-          credit_line_item.credit = amount
+          transaction.line_items.build(account: primary_account, debit: amount)
+          transaction.line_items.build(account: credit_account, credit: amount)
         else
-          credit_line_item.account = primary_account
-          credit_line_item.credit = amount
-
-          debit_line_item.account = debit_account
-          debit_line_item.debit = amount
+          transaction.line_items.build(account: primary_account, credit: amount)
+          transaction.line_items.build(account: debit_account, debit: amount)
         end
 
         @transactions << transaction

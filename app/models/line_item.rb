@@ -1,7 +1,7 @@
 class LineItem < ActiveRecord::Base
   include Monetizable
 
-  attr_accessible :account_id, :debit, :credit
+  attr_accessible :account, :account_id, :debit, :credit
 
   belongs_to :transaction
   belongs_to :account
