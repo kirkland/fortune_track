@@ -1,42 +1,38 @@
 - Assets:
   - Cash:
     - Currency
-    - Bank of America
     - Central Bank
     - ING Direct:
       - Savings
       - Checking
       - Espresso
+    - Bank of America
     - Sharebuilder Cash
     - Checks
-    - Other
-  - Short-Term Loans:
-    - Owie
-    - Ooh
-  - Liquid Investments:
+  - Brokerage:
     - VTI
     - IPE
     - AAPL
     - Bitcoin
-  - Retirement Investments:
+  - Precious Metals:
+    - Gold
+    - Silver
+  - Loans:
+    - Owie
+    - Ooh
+  - Retirement:
     - Rob Roth:
       - Cash
       - CARB
     - Anne Roth:
       - Cash
-  - Ubonin Net Value
-  - Precious Metals:
-    - Gold
-    - Silver
   - Mini Cooper
+  - Ubonin Net Value
   - Real Estate:
     - 224 Trapelo
     - Rubber Trees
   - Misc:
     - Nala Sovereign Bank
-  - Owed:
-    - Owie
-    - Ooh
   - Unknown
 - Equity:
   - Opening Balance
@@ -60,4 +56,5 @@
   - Mortgage:
     - First Mortgage
     - Second Mortgage
+  - Ubonin Cash
   - Misc
