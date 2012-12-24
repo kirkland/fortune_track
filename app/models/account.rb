@@ -116,7 +116,7 @@ class Account < ActiveRecord::Base
   end
 
   def siblings
-    siblings_with_self.where("id != ?", id)
+    new_record? ? siblings_with_self : siblings_with_self.where("id != ?", id)
   end
 
   def siblings_with_self
@@ -162,7 +162,7 @@ class Account < ActiveRecord::Base
 
   def update_siblings_sort_order
     if new_record?
-      sort_order = siblings.count + 1
+      self.sort_order = siblings.count + 1
     elsif sort_order_changed?
       moved_up = sort_order < sort_order_was.to_i
 
