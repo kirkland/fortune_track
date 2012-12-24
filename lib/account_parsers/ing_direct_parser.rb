@@ -1,3 +1,5 @@
+require 'csv'
+
 module AccountParsers
   class IngDirectParser < GenericAccountParser
     def initialize
@@ -21,7 +23,7 @@ module AccountParsers
         asset_account = case row[1]
           when '540524954' then Account.all.detect{|x| x.full_name =~ /ING Direct:Checking/ }
           when '123567907' then Account.all.detect{|x| x.full_name =~ /ING Direct:Savings/ }
-          when '165003188' then Account.all.detect{|x| x.full_name =~ /ING Direct:Espresso Savings/ }
+          when '165003188' then Account.all.detect{|x| x.full_name =~ /ING Direct:Espresso/ }
         end
 
         if outflow
