@@ -31,22 +31,60 @@
   - Real Estate:
     - 224 Trapelo
     - Rubber Trees
-  - Misc:
+  - Other:
     - Nala Sovereign Bank
   - Unknown
 - Equity:
   - Opening Balance
 - Expenses:
+  - Baby:
+    - Clothing
+    - Diapers
+    - Food
+    - Toys
+    - Other
+  - Clothing
+  - Edification:
+    - Books
   - Food:
     - Groceries
     - Restaurant
     - Snacks
-  - Misc
+  - Gifts
+  - Healthcare
+  - Home:
+    - Furnishings
+    - Supplies
+  - Internet Services
+  - Other
+  - Real Estate:
+    - Mortgage Interest
+    - Property Tax
+  - Recreation:
+    - Books
+    - Movies
+    - Other
+  - Transportation:
+    - Gas
+    - Car Maintenance
+    - Insurance
+    - Public Transportation
+    - Repairs
+    - Tolls
+  - Travel:
+    - Flights
+    - Hotels
+    - Other
+  - Utilities:
+    - Electricity
+    - Gas
+    - Internet/TV
+    - Phone
   - Unknown
 - Income:
   - Salary
   - Rent
-  - Misc
+  - Other
   - Unknown
 - Liabilities:
   - Credit Cards:
@@ -57,4 +95,4 @@
     - First Mortgage
     - Second Mortgage
   - Ubonin Cash
-  - Misc
+  - Other
