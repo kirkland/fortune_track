@@ -17,4 +17,5 @@
   :plain
     $('.toggler').click(function(event) {
       $(event.target).closest('.account_row').toggleClass('hide_children');
+      return false;
     });
