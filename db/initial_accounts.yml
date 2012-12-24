@@ -46,6 +46,7 @@
     - Food
     - Toys
     - Other
+  - Charity
   - Clothing
   - Edification:
     - Books
@@ -55,10 +56,11 @@
     - Snacks
   - Gifts
   - Health:
-    - Doctor Bills
+    - Doctor Visits
     - Sports Equipment
   - Home:
     - Furnishings
+    - Office Supplies
     - Supplies
   - Internet Services
   - Other:
