@@ -9,29 +9,30 @@
     - Bank of America
     - Sharebuilder Cash
     - Checks
-  - Brokerage:
-    - VTI
-    - IPE
-    - AAPL
-    - Bitcoin
-  - Precious Metals:
-    - Gold
-    - Silver
+  - Investments:
+    - Brokerage:
+      - VTI
+      - IPE
+      - AAPL
+      - Bitcoin
+    - Precious Metals:
+      - Gold
+      - Silver
+    - Retirement:
+      - Rob Roth:
+        - Cash
+        - CARB
+      - Anne Roth:
+        - Cash
+    - Real Estate:
+      - 224 Trapelo
+      - Rubber Trees
+    - Ubonin Net Value
   - Loans:
     - Owie
     - Ooh
-  - Retirement:
-    - Rob Roth:
-      - Cash
-      - CARB
-    - Anne Roth:
-      - Cash
-  - Mini Cooper
-  - Ubonin Net Value
-  - Real Estate:
-    - 224 Trapelo
-    - Rubber Trees
   - Other:
+    - Mini Cooper
     - Nala Sovereign Bank
   - Unknown
 - Equity:
@@ -51,7 +52,9 @@
     - Restaurant
     - Snacks
   - Gifts
-  - Healthcare
+  - Health:
+    - Doctor Bills
+    - Sports Equipment
   - Home:
     - Furnishings
     - Supplies
