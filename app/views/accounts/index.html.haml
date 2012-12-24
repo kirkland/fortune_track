@@ -1,5 +1,15 @@
 %h1 Accounts
 
+%p
+  - if @show_all
+    = link_to 'hide empty', accounts_path
+    &mdash;
+    show all
+  - else
+    hide empty
+    &mdash;
+    = link_to 'show all', accounts_path(show_all: true)
+
 #accounts
   .account_row.header
     .name Account

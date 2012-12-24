@@ -11,5 +11,5 @@
   .credit= account.credit_balance_with_children
 
   - account.child_accounts.order(:sort_order).each do |child|
-    - if show_account? child
+    - if show_account?(child)
       = render child

@@ -1,6 +1,7 @@
 class AccountsController < ApplicationController
   def index
     @accounts = Account.where(parent_account_id: nil)
+    @show_all = params[:show_all].present?
   end
 
   def new
