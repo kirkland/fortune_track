@@ -161,7 +161,9 @@ class Account < ActiveRecord::Base
   end
 
   def update_siblings_sort_order
-    if sort_order_changed?
+    if new_record?
+      sort_order = siblings.count + 1
+    elsif sort_order_changed?
       moved_up = sort_order < sort_order_was.to_i
 
       # Use update_all to avoid after_save callbacks on other accounts.
