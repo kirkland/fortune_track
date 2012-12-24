@@ -1,6 +1,7 @@
 = semantic_form_for @transaction do |f|
   %p= f.input :description, as: :text, input_html: { style: 'width: 600px; height: 100px' }
   %p= f.input :date, as: :string, input_html: { value: @transaction.date.presence || Time.now.to_date }
+  %p= f.input :duplicate_transaction_id
   = render partial: 'line_item', collection: @line_items || @transaction.line_items
   %a#add_line_item{href: '#', onclick: "addLineItem()"} Add Line Item
   %p= f.submit

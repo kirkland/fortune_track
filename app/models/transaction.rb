@@ -1,5 +1,5 @@
 class Transaction < ActiveRecord::Base
-  attr_accessible  :description, :date
+  attr_accessible  :description, :date, :duplicate_transaction_id
 
   has_many :line_items, dependent: :destroy, inverse_of: :transaction, order: 'id ASC'
   belongs_to :duplicate_transaction, class_name: 'Transaction'
