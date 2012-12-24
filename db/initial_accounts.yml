@@ -28,7 +28,9 @@
       - 224 Trapelo
       - Rubber Trees
     - Ubonin Net Value
-  - Loans:
+  - Owed:
+    - Mike Phone
+    - Mom Phone
     - Owie
     - Ooh
   - Other:
@@ -59,7 +61,8 @@
     - Furnishings
     - Supplies
   - Internet Services
-  - Other
+  - Other:
+    - Bank Fees
   - Real Estate:
     - Mortgage Interest
     - Property Tax
@@ -87,7 +90,11 @@
 - Income:
   - Salary
   - Rent
-  - Other
+  - Consulting
+  - Other:
+    - Credit Card Rewards
+    - Dividends
+    - Interest
   - Unknown
 - Liabilities:
   - Credit Cards:
