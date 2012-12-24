@@ -2,6 +2,8 @@ class Transaction < ActiveRecord::Base
   attr_accessible  :description, :date
 
   has_many :line_items, dependent: :destroy, inverse_of: :transaction, order: 'id ASC'
+  belongs_to :duplicate_transaction, class_name: 'Transaction'
+  has_one :duplicate_transaction_of, class_name: 'Transaction', inverse_of: :duplicate_transaction, foreign_key: 'duplicate_transaction_id'
 
   validate :debits_equals_credits
   validate :validates_has_line_item
