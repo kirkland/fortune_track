@@ -15,9 +15,12 @@ module Reports
         r = ReportRow.new
         r.account = account
 
-        transactions = account.transactions.where("transactions.date > ? AND transactions.date < ?", @start_date, @end_date)
-        total_debit = transactions.collect(&:line_items).flatten.select{|x| x.account == account}.sum(&:debit).to_money
-        total_credit = transactions.collect(&:line_items).flatten.select{|x| x.account == account}.sum(&:credit).to_money
+        transactions = Account.all.select{|x| x.full_name =~ /^#{account.full_name}/}.collect do |account|
+          account.transactions.where("transactions.date > ? AND transactions.date <= ?", @start_date, @end_date)
+        end.flatten
+
+        total_debit = transactions.collect(&:line_items).flatten.select{|x| x.account.full_name =~ /^#{account.full_name}/}.sum(&:debit).to_money
+        total_credit = transactions.collect(&:line_items).flatten.select{|x| x.account.full_name =~ /^#{account.full_name}/}.sum(&:credit).to_money
 
         r.amount = total_debit - total_credit
 
