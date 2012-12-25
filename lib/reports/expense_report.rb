@@ -1,6 +1,6 @@
 module Reports
   class ExpenseReport
-    class ReportRow < Struct.new(:account, :debit, :credit); end
+    class ReportRow < Struct.new(:account, :amount); end
 
     def initialize(start_date=nil, end_date=nil)
       @start_date = start_date || Time.now.beginning_of_month.to_date
@@ -19,15 +19,13 @@ module Reports
         total_debit = transactions.collect(&:line_items).flatten.select{|x| x.account == account}.sum(&:debit).to_money
         total_credit = transactions.collect(&:line_items).flatten.select{|x| x.account == account}.sum(&:credit).to_money
 
-        if total_debit > total_credit
-          r.debit = total_debit - total_credit
-          r.credit = 0.to_money
-        else
-          r.credit = total_credit - total_debit
-          r.debit = 0.to_money
-        end
+        r.amount = total_debit - total_credit
 
         r
+      end
+
+      @report_rows = @report_rows.select do |row|
+        row.amount > 0
       end
 
       @report_rows
