@@ -7,6 +7,7 @@ class Account < ActiveRecord::Base
   belongs_to :parent_account, class_name: 'Account'
   has_many :child_accounts, class_name: 'Account', foreign_key: 'parent_account_id'
   has_many :line_items
+  has_many :transactions, through: :line_items
 
   validate :no_parent_cycle
 
