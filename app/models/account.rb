@@ -128,6 +128,18 @@ class Account < ActiveRecord::Base
     end
   end
 
+  def descendents
+    return [] if child_accounts.blank?
+
+    rv = []
+    child_accounts.collect do |child|
+      rv << child
+      rv << child.descendents
+    end
+
+    rv.flatten
+  end
+
   def update_full_name
     if parent_account_id.present?
       self.full_name = "#{parent_account.full_name}:#{name}"
