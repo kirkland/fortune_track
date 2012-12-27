@@ -211,7 +211,7 @@ class Account < ActiveRecord::Base
     if sort_order_changed? || parent_account_id_changed?
       accounts = []
 
-      Account.where(parent_account_id: nil).each do |account|
+      Account.where(parent_account_id: nil).sort_by {|x| x.sort_order }.each do |account|
         accounts << account
 
         accounts += account.descendents
