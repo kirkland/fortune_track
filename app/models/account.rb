@@ -15,6 +15,8 @@ class Account < ActiveRecord::Base
   before_save :update_sort_order
   after_save :update_global_sort_order
 
+  default_scope order(:global_sort_order)
+
   def balance_type
     credit_total > debit_total ? :credit : :debit
   end
