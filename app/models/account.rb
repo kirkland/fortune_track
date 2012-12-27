@@ -24,8 +24,7 @@ class Account < ActiveRecord::Base
   def compact_children_sort_order
     index = 1
     child_accounts.order(:sort_order).each do |account|
-      account.sort_order = index
-      account.save!
+      account.update_column :sort_order, index
       index += 1
     end
   end
@@ -202,8 +201,6 @@ class Account < ActiveRecord::Base
 
       self.sort_order = siblings.count + 1
 
-      # Make sure old parent hierarchy stays in a consistent state.
-      Account.find(parent_account_id_was).compact_children_sort_order if parent_account_id_was.present?
     end
   end
 
