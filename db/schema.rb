@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121224084037) do
+ActiveRecord::Schema.define(:version => 20121227135336) do
 
   create_table "accounts", :force => true do |t|
     t.text     "name"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20121224084037) do
     t.datetime "updated_at",        :null => false
     t.string   "parser_class"
     t.integer  "sort_order"
+    t.integer  "global_sort_order"
   end
 
   create_table "line_items", :force => true do |t|

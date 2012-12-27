@@ -12,7 +12,8 @@ class Account < ActiveRecord::Base
   validate :no_parent_cycle
 
   before_save :update_related_full_names!
-  before_save :update_siblings_sort_order
+  before_save :update_sort_order
+  after_save :update_global_sort_order
 
   def balance_type
     credit_total > debit_total ? :credit : :debit
@@ -132,7 +133,7 @@ class Account < ActiveRecord::Base
     return [] if child_accounts.blank?
 
     rv = []
-    child_accounts.collect do |child|
+    child_accounts.sort_by { |x| x.sort_order.to_i }.collect do |child|
       rv << child
       rv << child.descendents
     end
@@ -177,10 +178,13 @@ class Account < ActiveRecord::Base
     end
   end
 
-  def update_siblings_sort_order
+  def update_sort_order
     if new_record?
+
       self.sort_order = siblings.count + 1
+
     elsif sort_order_changed?
+
       moved_up = sort_order < sort_order_was.to_i
 
       # Use update_all to avoid after_save callbacks on other accounts.
@@ -191,11 +195,29 @@ class Account < ActiveRecord::Base
         siblings.where('sort_order <= ? AND sort_order > ?', sort_order, sort_order_was)
           .update_all('sort_order = sort_order - 1')
       end
+
     elsif parent_account_id_changed?
+
       self.sort_order = siblings.count + 1
 
       # Make sure old parent hierarchy stays in a consistent state.
       Account.find(parent_account_id_was).compact_children_sort_order if parent_account_id_was.present?
+    end
+  end
+
+  def update_global_sort_order
+    if sort_order_changed? || parent_account_id_changed?
+      accounts = []
+
+      Account.where(parent_account_id: nil).each do |account|
+        accounts << account
+
+        accounts += account.descendents
+      end
+
+      accounts.each_with_index do |account, index|
+        account.update_column :global_sort_order, index + 1
+      end
     end
   end
 end
