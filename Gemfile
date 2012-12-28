@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'ap'
+gem 'capistrano'
 gem 'crack'
 gem 'factory_girl', '4.1.0'
 gem 'faker', '0.9.5'
