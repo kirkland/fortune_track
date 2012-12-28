@@ -9,8 +9,8 @@ def create_accounts(data, parent_account_id=nil)
     # I think each hash will only ever have one key/value pair.
     name = data.keys.first
     child_account_data = data.values.first
-    account = nil
-    if !Account.find_by_name_and_parent_account_id(name, parent_account_id)
+    account = Account.find_by_name_and_parent_account_id(name, parent_account_id)
+    if !account
       account = Account.create(name: name, parent_account_id: parent_account_id)
     end
     child_account_data.each { |x| create_accounts(x, account.id) }
