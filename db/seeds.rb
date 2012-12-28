@@ -2,7 +2,9 @@ require File.join(Rails.root, '/test/factories')
 
 def create_accounts(data, parent_account_id=nil)
   if data.is_a? String
-    Account.create(name: data, parent_account_id: parent_account_id)
+    if !Account.find_by_name_and_parent_account_id(data, parent_account_id)
+      Account.create(name: data, parent_account_id: parent_account_id)
+    end
   else
     # I think each hash will only ever have one key/value pair.
     name = data.keys.first
