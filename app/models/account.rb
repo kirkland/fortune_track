@@ -161,10 +161,6 @@ class Account < ActiveRecord::Base
     end
   end
 
-  def is_duplicate?
-    duplicate_transaction_of.present?
-  end
-
   private
 
   def no_parent_cycle
