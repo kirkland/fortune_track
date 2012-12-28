@@ -87,7 +87,13 @@ class Account < ActiveRecord::Base
     return unless parser_class.present?
 
     p = "AccountParsers::#{parser_class}".constantize.new
-    p.read_data_from_file # TODO: Should actually call download_data.
+
+    if p.class.name =~ /CapitalOne/
+      p.download_data
+    else
+      p.read_data_from_file # TODO: Should actually call download_data.
+    end
+
     transactions = p.parse_transactions
 
     new_transactions = transactions.reject do |transaction|
