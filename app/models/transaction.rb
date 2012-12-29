@@ -1,4 +1,6 @@
 class Transaction < ActiveRecord::Base
+  OLDEST_DATE = Date.new(2012,12,01)
+
   attr_accessible  :description, :date, :duplicate_transaction_id
 
   has_many :line_items, dependent: :destroy, inverse_of: :transaction, order: 'id ASC'
@@ -12,7 +14,7 @@ class Transaction < ActiveRecord::Base
 
   after_save :delete_empty_line_items
 
-  default_scope where('date > ?', Date.new(2012,12,01))
+  default_scope where('date >= ?', OLDEST_DATE)
                 .where('duplicate_transaction_id IS NULL')
 
   private
