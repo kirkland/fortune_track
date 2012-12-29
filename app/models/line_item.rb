@@ -9,7 +9,8 @@ class LineItem < ActiveRecord::Base
   validates_presence_of :account
   validates_presence_of :transaction
 
-  default_scope joins(:transaction).where('transactions.date >= ?', Transaction::OLDEST_DATE).where('transactions.duplicate_transaction_id IS NULL')
+  default_scope includes(:transaction).where('transactions.date >= ?', Transaction::OLDEST_DATE)
+    .where('transactions.duplicate_transaction_id IS NULL')
 
   money :credit
   money :debit
