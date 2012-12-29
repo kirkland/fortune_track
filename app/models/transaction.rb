@@ -12,6 +12,9 @@ class Transaction < ActiveRecord::Base
 
   after_save :delete_empty_line_items
 
+  default_scope where('date > ?', Date.new(2012,12,01))
+                .where('duplicate_transaction_id IS NULL')
+
   private
 
   def debits_equals_credits
