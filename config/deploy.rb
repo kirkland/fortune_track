@@ -1,4 +1,5 @@
-require "bundler/capistrano"
+require 'bundler/capistrano'
+require '/home/rob/c/fortune_track/lib/capistrano_recipes'
 
 default_environment['PATH'] = '$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH'
 

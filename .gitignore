@@ -15,6 +15,5 @@
 /tmp
 *.swp
 *.sassc
-credentials.yml
 notes/sample_data
 chromedriver.log
