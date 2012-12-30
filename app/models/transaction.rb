@@ -12,7 +12,7 @@ class Transaction < ActiveRecord::Base
 
   after_save :delete_empty_line_items
 
-  default_scope where('duplicate_transaction_id IS NULL')
+  default_scope where('duplicate_transaction_id IS NULL').order('date DESC')
 
   private
 
