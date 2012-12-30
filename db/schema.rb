@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121227135336) do
+ActiveRecord::Schema.define(:version => 20121230133224) do
 
   create_table "accounts", :force => true do |t|
     t.text     "name"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(:version => 20121227135336) do
     t.integer  "global_sort_order"
   end
 
-  create_table "archived_accounts", :id => false, :force => true do |t|
+  create_table "archived_accounts", :primary_key => "primary_id", :force => true do |t|
     t.integer  "id",                :null => false
     t.text     "name"
     t.text     "full_name"
