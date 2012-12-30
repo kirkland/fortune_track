@@ -1,4 +1,6 @@
 class Transaction < ActiveRecord::Base
+  acts_as_archive
+
   attr_accessible  :description, :date, :duplicate_transaction_id
 
   has_many :line_items, dependent: :destroy, inverse_of: :transaction, order: 'line_items.id ASC'

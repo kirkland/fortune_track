@@ -24,6 +24,39 @@ ActiveRecord::Schema.define(:version => 20121227135336) do
     t.integer  "global_sort_order"
   end
 
+  create_table "archived_accounts", :id => false, :force => true do |t|
+    t.integer  "id",                :null => false
+    t.text     "name"
+    t.text     "full_name"
+    t.integer  "parent_account_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.string   "parser_class"
+    t.integer  "sort_order"
+    t.integer  "global_sort_order"
+    t.datetime "deleted_at"
+  end
+
+  create_table "archived_line_items", :id => false, :force => true do |t|
+    t.integer  "id",                   :null => false
+    t.integer  "transaction_id"
+    t.integer  "account_id"
+    t.integer  "debit_amount",         :null => false
+    t.string   "debit_currency_code",  :null => false
+    t.integer  "credit_amount",        :null => false
+    t.string   "credit_currency_code", :null => false
+    t.datetime "deleted_at"
+  end
+
+  create_table "archived_transactions", :id => false, :force => true do |t|
+    t.integer  "id",                       :null => false
+    t.date     "date"
+    t.text     "description"
+    t.text     "unique_code"
+    t.integer  "duplicate_transaction_id"
+    t.datetime "deleted_at"
+  end
+
   create_table "line_items", :force => true do |t|
     t.integer "transaction_id"
     t.integer "account_id"

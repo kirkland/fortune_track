@@ -1,0 +1,9 @@
+Transaction:
+  - class: Transaction::Archive
+    table: archived_transactions
+LineItem:
+  - class: LineItem::Archive
+    table: archived_line_items
+Account:
+  - class: Account::Archive
+    table: archived_accounts

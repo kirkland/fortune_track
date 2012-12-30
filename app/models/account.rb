@@ -1,4 +1,6 @@
 class Account < ActiveRecord::Base
+  acts_as_archive
+
   PARSERS = ['CapitalOneParser', 'CentralBankParser', 'ChaseParser', 'IngDirectParser',
     'BankOfAmericaParser']
 
