@@ -1,9 +1,9 @@
 class TransactionsController < ApplicationController
   def index
-    @transactions = Transaction.order('date DESC')
+    @transactions = Transaction.all
 
     if params[:account_id].present?
-      @transactions = @transactions.all.select{|x| x.line_items.any?{|l| l.account_id == params[:account_id].to_i}}
+      @transactions = Account.find(params[:account_id]).transactions
     end
   end
 
@@ -13,6 +13,13 @@ class TransactionsController < ApplicationController
 
   def new
     @transaction = Transaction.new
+
+    currency = Account.all.detect { |x| x.name =~ /Currency/ }
+    expense = Account.all.detect { |x| x.full_name =~ /^Expenses:Other$/ }
+
+    # Default to a cash expense.
+    @transaction.line_items.build(account: currency)
+    @transaction.line_items.build(account: expense)
   end
 
   def show
