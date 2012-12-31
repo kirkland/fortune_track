@@ -15,7 +15,7 @@ module AccountParsers
     # When a transaction is created, if the primary_account has a credit balance,
     # then the account defined here will have a debit balance.
     def debit_account
-      subclass_must_define
+      @debit_account ||= Account.find_by_full_name 'Expenses:Unknown'
     end
 
     # When a transaction is created, if the primary_account has a debit balance,

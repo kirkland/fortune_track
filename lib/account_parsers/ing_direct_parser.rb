@@ -13,10 +13,6 @@ module AccountParsers
       end
     end
 
-    def debit_account
-      @debit_account ||= Account.find_by_full_name 'Expenses:Unknown'
-    end
-
     def credit_account
       @credit_account ||= Account.find_by_full_name 'Income:Unknown'
     end
