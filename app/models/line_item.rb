@@ -1,6 +1,4 @@
 class LineItem < ActiveRecord::Base
-  acts_as_archive
-
   include Monetizable
 
   attr_accessible :account, :account_id, :debit, :credit

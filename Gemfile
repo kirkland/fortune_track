@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'acts_as_archive', :git => 'git://github.com/backupify/acts_as_archive.git', :branch => 'disable_sti'
 gem 'ap'
 gem 'capistrano'
 gem 'crack'
