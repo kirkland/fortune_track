@@ -18,7 +18,8 @@ class Transaction < ActiveRecord::Base
   private
 
   def debits_equals_credits
-    if line_items.collect(&:debit).sum != line_items.collect(&:credit).sum
+    will_save = line_items.select { |x| !x.marked_for_destruction? }
+    if will_save.collect(&:debit).sum != will_save.collect(&:credit).sum
       errors.add(:line_items, 'total debits must equal total credits')
     end
   end
