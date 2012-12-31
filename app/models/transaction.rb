@@ -1,7 +1,8 @@
 class Transaction < ActiveRecord::Base
   attr_accessible  :description, :date, :duplicate_transaction_id
 
-  has_many :line_items, dependent: :destroy, inverse_of: :transaction, order: 'line_items.id ASC'
+  has_many :line_items, dependent: :destroy, inverse_of: :transaction, order: 'line_items.id ASC',
+    autosave: true
 
   # The record with duplicate_transaction_id populated is the duplicate, and will be ignored.
   belongs_to :duplicate_transaction, class_name: 'Transaction'
