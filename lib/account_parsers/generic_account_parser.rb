@@ -57,6 +57,11 @@ module AccountParsers
       create_new_transactions
     end
 
+    def read_and_create_transactions
+      read_data_from_file
+      create_new_transactions
+    end
+
     private
 
     def subclass_must_define
