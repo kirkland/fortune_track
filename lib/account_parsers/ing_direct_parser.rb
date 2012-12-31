@@ -3,6 +3,8 @@ require 'csv'
 module AccountParsers
   class IngDirectParser < GenericAccountParser
 
+    include BankAccount
+
     # Since we get data for multiple ING accounts at once, we need to specify the account_id
     # in order to know which account to use.
     def primary_account(account_id)
@@ -11,10 +13,6 @@ module AccountParsers
         when '123567907' then Account.all.detect{|x| x.full_name =~ /ING Direct:Savings/ }
         when '165003188' then Account.all.detect{|x| x.full_name =~ /ING Direct:Espresso/ }
       end
-    end
-
-    def credit_account
-      @credit_account ||= Account.find_by_full_name 'Income:Unknown'
     end
 
     def build_transactions(filename=nil)

@@ -1,13 +1,12 @@
 module AccountParsers
   class CapitalOneParser < GenericAccountParser
 
+    include CreditCardAccount
+
     def primary_account
       @primary_account ||= Account.all.detect{ |x| x.name =~ /Capital One/ }
     end
 
-    def credit_account
-      @credit_account ||= Account.find_or_create_by_full_name 'Assets:Unknown'
-    end
 
     def build_transactions
       @n = Nokogiri::HTML @raw_data

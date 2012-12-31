@@ -3,12 +3,10 @@ require 'csv'
 module AccountParsers
   class ChaseParser < GenericAccountParser
 
+    include CreditCardAccount
+
     def primary_account
       @primary_account ||= Account.all.detect{|x| x.name =~ /Amazon/}
-    end
-
-    def credit_account
-      @credit_account ||= Account.find_by_full_name 'Assets:Unknown'
     end
 
     def build_transactions(filename=nil)

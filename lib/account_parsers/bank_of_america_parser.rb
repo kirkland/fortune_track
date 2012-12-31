@@ -3,12 +3,10 @@ require 'csv'
 module AccountParsers
   class BankOfAmericaParser < GenericAccountParser
 
+    include BankAccount
+
     def primary_account
       @primary_account ||= Account.all.detect{|x| x.name =~ /Bank of America/}
-    end
-
-    def credit_account
-      @credit_account ||= Account.find_by_full_name 'Income:Unknown'
     end
 
     def build_transactions(filename=nil)
