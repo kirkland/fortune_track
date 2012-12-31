@@ -3,7 +3,7 @@ require 'csv'
 module AccountParsers
   class ChaseParser < GenericAccountParser
 
-    def parse_transactions(filename=nil)
+    def build_transactions(filename=nil)
       filename = File.join(Rails.root, 'notes/sample_data/chase_amazon.csv') if filename.nil?
       CSV.foreach(filename) do |row|
         next if row[0] == 'Type'
@@ -41,8 +41,5 @@ module AccountParsers
       @transactions
     end
 
-    def read_data_from_file
-      # no-op
-    end
   end
 end

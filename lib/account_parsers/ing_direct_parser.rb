@@ -3,7 +3,7 @@ require 'csv'
 module AccountParsers
   class IngDirectParser < GenericAccountParser
 
-    def parse_transactions(filename=nil)
+    def build_transactions(filename=nil)
       filename = File.join(Rails.root, 'notes/sample_data/ing_direct.csv') if filename.nil?
       CSV.foreach(filename) do |row|
         next if row[0] == 'BANK ID' || row.blank?
@@ -47,8 +47,5 @@ module AccountParsers
       @transactions
     end
 
-    def read_data_from_file
-      # no-op
-    end
   end
 end

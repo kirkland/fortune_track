@@ -3,7 +3,7 @@ require 'csv'
 module AccountParsers
   class CentralBankParser < GenericAccountParser
 
-    def parse_transactions
+    def build_transactions
       filename = File.join(Rails.root, 'notes/sample_data/central_bank.csv') if filename.nil?
       CSV.foreach(filename) do |row|
         if row.length == 1 || row[0] == 'Transaction Number'
@@ -44,8 +44,5 @@ module AccountParsers
       @transactions
     end
 
-    def read_data_from_file
-      # no-op
-    end
   end
 end
