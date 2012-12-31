@@ -70,7 +70,7 @@ module AccountParsers
     end
 
     def parse_date(date_string)
-      month, day, year = date_string.split('/')
+      month, day, year = date_string.split('/').collect(&:to_i)
       Date.new year, month, day
     end
 
