@@ -51,11 +51,6 @@ module AccountParsers
       @transactions
     end
 
-    def read_data_from_file(filename=nil)
-      filename = File.join(Rails.root, 'notes/sample_data/capital_one.html') if filename.nil?
-      @raw_data = File.read(filename)
-    end
-
     def download_data
       username = Credentials['capital_one']['username']
       password = Credentials['capital_one']['password']
@@ -97,6 +92,12 @@ module AccountParsers
       h.destroy
 
       @raw_data
+    end
+
+    private
+
+    def default_data_filename
+      File.join(Rails.root, 'notes/sample_data/capital_one.html')
     end
   end
 end

@@ -30,6 +30,28 @@ module AccountParsers
       subclass_must_define
     end
 
+    # This will save new transactions to the database, skipping over already-existing ones.
+    def create_new_transactions
+      new_transactions = build_transactions.reject do |transaction|
+        Transaction.find_by_unique_code(transaction.unique_code)
+      end
+
+      new_transactions.each do |t|
+        t.save!
+      end
+    end
+
+    # Download latest transaction data.
+    def download_data
+      subclass_must_define
+    end
+
+    # Read transactional data from a file (for development and testing, mainly).
+    def read_data_from_file(filename=nil)
+      filename = default_data_filename if filename.nil?
+      @raw_data = File.read(filename)
+    end
+
     private
 
     def subclass_must_define
@@ -39,7 +61,11 @@ module AccountParsers
 
     def parse_date(date_string)
       month, day, year = date_string.split('/')
-      Date.parse("#{year}-#{month}-#{day}")
+      Date.new year, month, day
+    end
+
+    def default_data_filename
+      raise "Subclass must define this method."
     end
   end
 end
