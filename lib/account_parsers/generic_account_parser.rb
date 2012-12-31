@@ -1,4 +1,33 @@
 module AccountParsers
   class GenericAccountParser
+
+    def initialize
+      @transactions = []
+    end
+
+    # Should return primary account for the file parsed, e.g. a bank account or
+    # credit card account.
+    def primary_account
+      subclass_must_define
+    end
+
+    # When a transaction is created, if the primary_account has a credit balance,
+    # then the account defined here will have a debit balance.
+    def debit_account
+      subclass_must_define
+    end
+
+    # When a transaction is created, if the primary_account has a debit balance,
+    # then the account defined here will have a credit balance.
+    def credit_account
+      subclass_must_define
+    end
+
+    private
+
+    def subclass_must_define
+      # TODO: can we find out what the name of the method is?
+      raise "Subclass must define this method."
+    end
   end
 end

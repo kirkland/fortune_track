@@ -2,9 +2,6 @@ require 'csv'
 
 module AccountParsers
   class CentralBankParser < GenericAccountParser
-    def initialize
-      @transactions = []
-    end
 
     def parse_transactions
       filename = File.join(Rails.root, 'notes/sample_data/central_bank.csv') if filename.nil?

@@ -2,9 +2,6 @@ require 'csv'
 
 module AccountParsers
   class ChaseParser < GenericAccountParser
-    def initialize
-      @transactions = []
-    end
 
     def parse_transactions(filename=nil)
       filename = File.join(Rails.root, 'notes/sample_data/chase_amazon.csv') if filename.nil?

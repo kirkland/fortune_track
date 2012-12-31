@@ -2,9 +2,6 @@ require 'csv'
 
 module AccountParsers
   class IngDirectParser < GenericAccountParser
-    def initialize
-      @transactions = []
-    end
 
     def parse_transactions(filename=nil)
       filename = File.join(Rails.root, 'notes/sample_data/ing_direct.csv') if filename.nil?

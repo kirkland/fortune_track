@@ -2,10 +2,6 @@ module AccountParsers
   class CapitalOneParser < GenericAccountParser
     attr_accessor :raw_data, :transactions
 
-    def initialize
-      @transactions = []
-    end
-
     def primary_account
       @primary_account ||= Account.all.detect{ |x| x.name =~ /Capital One/ }
     end
