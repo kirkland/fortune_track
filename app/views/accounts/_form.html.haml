@@ -1,6 +1,5 @@
 = semantic_form_for @account do |f|
   %p= f.input :name, as: :string
   %p= f.input :parent_account
-  %p= f.input :parser_class, as: :select, collection: Account::PARSERS
   %p= f.input :sort_order
   %p= f.submit

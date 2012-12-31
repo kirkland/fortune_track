@@ -2,7 +2,7 @@ class Account < ActiveRecord::Base
   PARSERS = ['CapitalOneParser', 'CentralBankParser', 'ChaseParser', 'IngDirectParser',
     'BankOfAmericaParser']
 
-  attr_accessible :name, :parent_account, :parent_account_id, :parser_class, :sort_order
+  attr_accessible :name, :parent_account, :parent_account_id, :sort_order
 
   belongs_to :parent_account, class_name: 'Account'
   has_many :child_accounts, class_name: 'Account', foreign_key: 'parent_account_id'
