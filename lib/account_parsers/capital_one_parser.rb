@@ -13,9 +13,7 @@ module AccountParsers
       @credit_account ||= Account.find_or_create_by_full_name 'Assets:Unknown'
     end
 
-    def parse_transactions
-      raise 'You must download data or read from a file before parsing it.' if @raw_data.blank?
-
+    def build_transactions
       @n = Nokogiri::HTML @raw_data
 
       @rows = @n.css('tr.trxSummayRow')
