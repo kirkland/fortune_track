@@ -20,18 +20,9 @@ end
 data = YAML.load(File.read(File.join(Rails.root, 'db/initial_accounts.yml')))
 data.each { |x| create_accounts(x) }
 
-# Probably don't need fake data anymore.
-#if Rails.env.development?
-#  # Some seed transaction data.
-#  cash = Account.where(name: 'Cash').first
-#  opening = Account.where(name: 'Opening Balance').first
-#
-#  t = FactoryGirl.build(:transaction)
-#  t.line_items << FactoryGirl.build(:line_item, account: cash, debit: 1000.to_money)
-#  t.line_items << FactoryGirl.build(:line_item, account: opening, credit: 1000.to_money)
-#  t.save!
-#
-#  10.times { FactoryGirl.create(:cash_expense_transaction) }
-#  5.times { FactoryGirl.create(:liability_expense_transaction) }
-#  2.times { FactoryGirl.create(:income_transaction) }
-#end
+if Rails.env.development?
+  ['CapitalOneParser', 'BankOfAmericaParser', 'ChaseParser', 'IngDirectParser',
+    'CentralBankParser'].each do |class_name|
+    "AccountParsers::#{class_name}".constantize.new.read_and_create_transactions
+  end
+end
