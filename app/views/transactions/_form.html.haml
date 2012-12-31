@@ -21,7 +21,6 @@
       var fields = $(target).closest('div');
       if ( fields.find('.line_item_id').val() === '' ) {
         // New record.
-        console.log("new record");
         fields.remove();
       } else {
         fields.find('.deleted').val(true);
