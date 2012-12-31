@@ -1,6 +1,5 @@
 module AccountParsers
   class CapitalOneParser < GenericAccountParser
-    attr_accessor :raw_data, :transactions
 
     def primary_account
       @primary_account ||= Account.all.detect{ |x| x.name =~ /Capital One/ }
@@ -98,13 +97,6 @@ module AccountParsers
       h.destroy
 
       @raw_data
-    end
-
-    private
-
-    def parse_date(date_string)
-      month, day, year = date_string.split('/')
-      Date.parse("#{year}-#{month}-#{day}")
     end
   end
 end

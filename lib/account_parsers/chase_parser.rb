@@ -44,12 +44,5 @@ module AccountParsers
     def read_data_from_file
       # no-op
     end
-
-    private
-
-    def parse_date(date_string)
-      month, day, year = date_string.split('/')
-      Date.parse "#{year}-#{month}-#{day}"
-    end
   end
 end
