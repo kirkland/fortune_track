@@ -16,7 +16,7 @@ module AccountParsers
     end
 
     def build_transactions(filename=nil)
-      CSV.parse(@raw_data) do |row|
+      CSV.parse(@raw_data).each do |row|
         next if row.length < 4 || row[0] == 'Date' || row[1] =~ /Beginning balance/
 
         transaction = Transaction.new

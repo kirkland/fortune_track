@@ -22,7 +22,7 @@ module AccountParsers
     end
 
     def build_transactions(filename=nil)
-      CSV.parse(@raw_data) do |row|
+      CSV.parse(@raw_data).each do |row|
         next if row[0] == 'BANK ID' || row.blank?
 
         transaction = Transaction.new

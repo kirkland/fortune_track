@@ -16,7 +16,7 @@ module AccountParsers
     end
 
     def build_transactions
-      CSV.parse(@raw_data) do |row|
+      CSV.parse(@raw_data).each do |row|
         if row.length == 1 || row[0] == 'Transaction Number'
           next
         end

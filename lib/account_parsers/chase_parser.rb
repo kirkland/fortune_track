@@ -3,9 +3,20 @@ require 'csv'
 module AccountParsers
   class ChaseParser < GenericAccountParser
 
+    def primary_account
+      @primary_account ||= Account.all.detect{|x| x.name =~ /Amazon/}
+    end
+
+    def debit_account
+      @debit_account ||= Account.find_by_full_name 'Expenses:Unknown'
+    end
+
+    def credit_account
+      @credit_account ||= Account.find_by_full_name 'Assets:Unknown'
+    end
+
     def build_transactions(filename=nil)
-      filename = File.join(Rails.root, 'notes/sample_data/chase_amazon.csv') if filename.nil?
-      CSV.foreach(filename) do |row|
+      CSV.parse(@raw_data).each do |row|
         next if row[0] == 'Type'
 
         transaction = Transaction.new
@@ -19,19 +30,19 @@ module AccountParsers
 
         if outflow
           liability = transaction.line_items.build
-          liability.account = Account.all.detect{|x| x.name =~ /Amazon/}
+          liability.account = primary_account
           liability.credit = amount
 
           expense = transaction.line_items.build
-          expense.account = Account.find_by_full_name 'Expenses:Unknown'
+          expense.account = debit_account
           expense.debit = amount
         else
           liability = transaction.line_items.build
-          liability.account = Account.all.detect{|x| x.name =~ /Amazon/}
+          liability.account = primary_account
           liability.debit = amount
 
           asset = transaction.line_items.build
-          asset.account = Account.find_by_full_name 'Assets:Unknown'
+          asset.account = credit_account
           asset.credit = amount
         end
 
@@ -39,6 +50,12 @@ module AccountParsers
       end
 
       @transactions
+    end
+
+    private
+
+    def default_data_filename
+      File.join(Rails.root, 'notes/sample_data/chase_amazon.csv')
     end
 
   end
