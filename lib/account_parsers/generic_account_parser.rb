@@ -52,6 +52,11 @@ module AccountParsers
       @raw_data = File.read(filename)
     end
 
+    def download_and_create_transactions
+      download_data
+      create_new_transactions
+    end
+
     private
 
     def subclass_must_define

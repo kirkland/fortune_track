@@ -3,9 +3,20 @@ require 'csv'
 module AccountParsers
   class BankOfAmericaParser < GenericAccountParser
 
+    def primary_account
+      @primary_account ||= Account.all.detect{|x| x.name =~ /Bank of America/}
+    end
+
+    def debit_account
+      @debit_account ||= Account.find_by_full_name 'Expenses:Unknown'
+    end
+
+    def credit_account
+      @credit_account ||= Account.find_by_full_name 'Income:Unknown'
+    end
+
     def build_transactions(filename=nil)
-      filename = File.join(Rails.root, 'notes/sample_data/bank_of_america.txt') if filename.nil?
-      CSV.foreach(filename) do |row|
+      CSV.parse(@raw_data) do |row|
         next if row.length < 4 || row[0] == 'Date' || row[1] =~ /Beginning balance/
 
         transaction = Transaction.new
@@ -19,19 +30,19 @@ module AccountParsers
 
         if outflow
           asset = transaction.line_items.build
-          asset.account = Account.all.detect{|x| x.name =~ /Bank of America/}
+          asset.account = primary_account
           asset.credit = amount
 
           expense = transaction.line_items.build
-          expense.account = Account.find_by_full_name 'Expenses:Unknown'
+          expense.account = debit_account
           expense.debit = amount
         else
           asset = transaction.line_items.build
-          asset.account = Account.all.detect{|x| x.name =~ /Bank of America/}
+          asset.account = primary_account
           asset.debit = amount
 
           income = transaction.line_items.build
-          income.account = Account.find_by_full_name 'Income:Unknown'
+          income.account = credit_account
           income.credit = amount
         end
 
@@ -39,6 +50,12 @@ module AccountParsers
       end
 
       @transactions
+    end
+
+    private
+
+    def default_data_filename
+      File.join(Rails.root, 'notes/sample_data/bank_of_america.txt')
     end
 
   end
