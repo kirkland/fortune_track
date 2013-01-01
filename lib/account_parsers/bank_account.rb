@@ -1,5 +1,5 @@
 module AccountParsers::BankAccount
   def credit_account
-    @credit_account ||= Account.find_by_full_name 'Income:Unknown'
+    @credit_account ||= Account.unknown_income
   end
 end

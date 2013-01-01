@@ -14,11 +14,10 @@ class TransactionsController < ApplicationController
   def new
     @transaction = Transaction.new
 
-    currency = Account.all.detect { |x| x.name =~ /Currency/ }
     expense = Account.all.detect { |x| x.full_name =~ /^Expenses:Other$/ }
 
     # Default to a cash expense.
-    @transaction.line_items.build(account: currency)
+    @transaction.line_items.build(account: Account.currency)
     @transaction.line_items.build(account: expense)
   end
 
@@ -33,7 +32,7 @@ class TransactionsController < ApplicationController
     @transaction = Transaction.new(params[:transaction])
     amount = params[:amount].to_money
     @transaction.line_items.build(debit: amount, account_id: params[:debit_account])
-    @transaction.line_items.build(credit: amount, account: Account.find_by_name('Currency'))
+    @transaction.line_items.build(credit: amount, account: Account.currency)
 
     if @transaction.save
       redirect_to transaction_path(@transaction)
