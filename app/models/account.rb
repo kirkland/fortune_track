@@ -29,6 +29,12 @@ class Account < ActiveRecord::Base
     self.credit_total = line_items.all.sum(&:credit).to_money
   end
 
+  def update_balances!
+    calculate_debit_total
+    calculate_credit_total
+    save!
+  end
+
   def balance_type
     credit_total > debit_total ? :credit : :debit
   end
