@@ -37,24 +37,24 @@ class Account < ActiveRecord::Base
     balance_type == :credit ? credit_total - debit_total : 0.to_money
   end
 
-  def credit_total_with_children
-    credit_total + child_accounts.sum(&:credit_total_with_children).to_money
+  def family_credit_total
+    credit_total + child_accounts.sum(&:family_credit_total).to_money
   end
 
-  def credit_balance_with_children
-    credit_total_with_children > debit_total_with_children ? credit_total_with_children - debit_total_with_children : 0.to_money
+  def family_credit_balance
+    family_credit_total > family_debit_total ? family_credit_total - family_debit_total : 0.to_money
   end
 
   def debit_balance
     balance_type == :debit ? debit_total - credit_total : 0.to_money
   end
 
-  def debit_balance_with_children
-    debit_total_with_children > credit_total_with_children ? debit_total_with_children - credit_total_with_children : 0.to_money
+  def family_debit_balance
+    family_debit_total > family_credit_total ? family_debit_total - family_credit_total : 0.to_money
   end
 
-  def debit_total_with_children
-    debit_total + child_accounts.sum(&:debit_total_with_children).to_money
+  def family_debit_total
+    debit_total + child_accounts.sum(&:family_debit_total).to_money
   end
 
   def compact_children_sort_order
@@ -88,8 +88,8 @@ class Account < ActiveRecord::Base
   end
 
   def self.net_worth
-    Account.find_by_full_name('Assets').debit_balance_with_children -
-      Account.find_by_full_name('Liabilities').debit_balance_with_children
+    Account.find_by_full_name('Assets').family_debit_balance -
+      Account.find_by_full_name('Liabilities').family_debit_balance
   end
 
   def self.populate_sort_order

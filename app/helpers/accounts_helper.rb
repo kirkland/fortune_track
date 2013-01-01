@@ -4,7 +4,7 @@ module AccountsHelper
   end
 
   def show_account?(account)
-    @show_all || account.debit_total_with_children != account.credit_total_with_children
+    @show_all || account.family_debit_total != account.family_credit_total
   end
 
   def show_children?(account)
