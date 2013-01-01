@@ -31,14 +31,4 @@ class AccountsController < ApplicationController
       render action: "edit"
     end
   end
-
-  def destroy
-    @account = Account.find(params[:id])
-    @account.destroy
-
-    respond_to do |format|
-      format.html { redirect_to accounts_url }
-      format.json { head :no_content }
-    end
-  end
 end
