@@ -13,5 +13,5 @@ PersonalAccounting::Application.routes.draw do
     end
   end
 
-  root :to => 'accounts#index'
+  root :to => 'reports#expense_report'
 end
