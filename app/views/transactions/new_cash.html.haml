@@ -1,0 +1,12 @@
+%h1 New Cash Transaction
+
+= semantic_form_for @transaction, url: create_cash_transactions_path do |f|
+  %p= f.input :description, as: :text, input_html: { style: 'width: 600px; height: 100px' }
+  %p= f.input :date, as: :string, input_html: { value: Time.now.to_date }
+  %label Amount
+  %input{name: 'amount', type: 'number'}
+  %div
+    %label Expense Category
+    = select_tag 'debit_account',
+      options_from_collection_for_select(@debit_choices, 'id', 'full_name', @debit_account.id)
+  = f.submit

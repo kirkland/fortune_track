@@ -22,6 +22,27 @@ class TransactionsController < ApplicationController
     @transaction.line_items.build(account: expense)
   end
 
+  def new_cash
+    @transaction = Transaction.new
+
+    @debit_choices = Account.all.select { |x| x.full_name =~ /^Expenses/ }
+    @debit_account = Account.find_by_full_name 'Expenses:Other'
+  end
+
+  def create_cash
+    @transaction = Transaction.new(params[:transaction])
+    amount = params[:amount].to_money
+    @transaction.line_items.build(debit: amount, account_id: params[:debit_account])
+    @transaction.line_items.build(credit: amount, account: Account.find_by_name('Currency'))
+
+    if @transaction.save
+      redirect_to transaction_path(@transaction)
+    else
+      flash[:error] = @transaction.errors.inspect
+      render :edit
+    end
+  end
+
   def show
     @transaction = Transaction.find(params[:id])
   end
