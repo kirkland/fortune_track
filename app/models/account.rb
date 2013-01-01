@@ -1,6 +1,5 @@
 class Account < ActiveRecord::Base
-  PARSERS = ['CapitalOneParser', 'CentralBankParser', 'ChaseParser', 'IngDirectParser',
-    'BankOfAmericaParser']
+  include Monetizable
 
   attr_accessible :name, :parent_account, :parent_account_id, :sort_order
 
@@ -17,32 +16,33 @@ class Account < ActiveRecord::Base
 
   default_scope order(:global_sort_order)
 
-  def balance_type
-    credit_total > debit_total ? :credit : :debit
+  money :debit_total
+  money :credit_total
+
+  def calculate_credit_total
+    self.credit_total = line_items.all.sum(&:credit).to_money
+    save!
   end
 
-  def compact_children_sort_order
-    index = 1
-    child_accounts.order(:sort_order).each do |account|
-      account.update_column :sort_order, index
-      index += 1
-    end
+  def calculate_debit_total
+    self.debit_total = line_items.all.sum(&:debit).to_money
+    save!
+  end
+
+  def balance_type
+    credit_total > debit_total ? :credit : :debit
   end
 
   def credit_balance
     balance_type == :credit ? credit_total - debit_total : 0.to_money
   end
 
-  def credit_balance_with_children
-    credit_total_with_children > debit_total_with_children ? credit_total_with_children - debit_total_with_children : 0.to_money
-  end
-
-  def credit_total
-    line_items.all.sum(&:credit).to_money
-  end
-
   def credit_total_with_children
     credit_total + child_accounts.sum(&:credit_total_with_children).to_money
+  end
+
+  def credit_balance_with_children
+    credit_total_with_children > debit_total_with_children ? credit_total_with_children - debit_total_with_children : 0.to_money
   end
 
   def debit_balance
@@ -57,8 +57,12 @@ class Account < ActiveRecord::Base
     debit_total + child_accounts.sum(&:debit_total_with_children).to_money
   end
 
-  def debit_total
-    line_items.all.sum(&:debit).to_money
+  def compact_children_sort_order
+    index = 1
+    child_accounts.order(:sort_order).each do |account|
+      account.update_column :sort_order, index
+      index += 1
+    end
   end
 
   def depth
