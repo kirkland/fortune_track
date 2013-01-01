@@ -33,7 +33,7 @@ module AccountParsers
     # This will save new transactions to the database, skipping over already-existing ones.
     def create_new_transactions
       new_transactions = build_transactions.reject do |transaction|
-        Transaction.find_by_unique_code(transaction.unique_code)
+        Transaction.unscoped.find_by_unique_code(transaction.unique_code)
       end
 
       new_transactions.each do |t|
