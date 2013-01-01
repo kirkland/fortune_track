@@ -19,12 +19,14 @@ class Account < ActiveRecord::Base
   money :debit_total
   money :credit_total
 
-  def calculate_credit_total
-    line_items.all.sum(&:credit).to_money
-  end
+  # Basic balances.
 
   def calculate_debit_total
     line_items.all.sum(&:debit).to_money
+  end
+
+  def calculate_credit_total
+    line_items.all.sum(&:credit).to_money
   end
 
   def balance_type
@@ -35,24 +37,30 @@ class Account < ActiveRecord::Base
     balance_type == :credit ? credit_total - debit_total : 0.to_money
   end
 
+  def debit_balance
+    balance_type == :debit ? debit_total - credit_total : 0.to_money
+  end
+
+  # Family balances.
+
+  def family_debit_total
+    debit_total + child_accounts.sum(&:family_debit_total).to_money
+  end
+
   def family_credit_total
     credit_total + child_accounts.sum(&:family_credit_total).to_money
   end
 
-  def family_credit_balance
-    family_credit_total > family_debit_total ? family_credit_total - family_debit_total : 0.to_money
-  end
-
-  def debit_balance
-    balance_type == :debit ? debit_total - credit_total : 0.to_money
+  def family_balance_type
+    family_credit_total > family_debit_total ? :credit : :debit
   end
 
   def family_debit_balance
     family_debit_total > family_credit_total ? family_debit_total - family_credit_total : 0.to_money
   end
 
-  def family_debit_total
-    debit_total + child_accounts.sum(&:family_debit_total).to_money
+  def family_credit_balance
+    family_credit_total > family_debit_total ? family_credit_total - family_debit_total : 0.to_money
   end
 
   def compact_children_sort_order
