@@ -2,9 +2,9 @@ module Reports
   class ExpenseReport
     class ReportRow < Struct.new(:account, :amount); end
 
-    def initialize(start_date=nil, end_date=nil)
-      @start_date = start_date || Time.now.beginning_of_month.to_date
-      @end_date = end_date || Time.now.to_date
+    def initialize(start_date, end_date)
+      @start_date = start_date
+      @end_date = end_date
 
       raise "start_date must be before end_date" if @start_date > @end_date
     end
