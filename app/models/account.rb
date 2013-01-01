@@ -20,13 +20,11 @@ class Account < ActiveRecord::Base
   money :credit_total
 
   def calculate_credit_total
-    self.credit_total = line_items.all.sum(&:credit).to_money
-    save!
+    line_items.all.sum(&:credit).to_money
   end
 
   def calculate_debit_total
-    self.debit_total = line_items.all.sum(&:debit).to_money
-    save!
+    line_items.all.sum(&:debit).to_money
   end
 
   def balance_type
