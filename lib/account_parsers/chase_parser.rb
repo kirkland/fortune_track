@@ -46,6 +46,37 @@ module AccountParsers
       @transactions
     end
 
+    def download_data
+      username = Credentials['chase']['username']
+      password = Credentials['chase']['password']
+
+      filename = File.join(Rails.root, 'tmp', 'Activity.CSV')
+      FileUtils.rm filename if File.exists? filename
+
+      with_browser do |b|
+        b.goto 'https://chaseonline.chase.com/logon.aspx'
+        b.text_field(name: 'UserID').set username
+        b.text_field(name: 'Password').set password
+
+        b.input(id: 'logon').click
+        Watir::Wait.until { b.table(:class => 'greeting').exists? }
+
+        b.goto 'https://cards.chase.com/cc/Account/Activity/175322547'
+        Watir::Wait.until { b.select(id: 'StatementPeriodQuick').exists? }
+
+        b.select(id: 'StatementPeriodQuick').select('All Transactions')
+
+        b.a(text: 'Download').click
+        Watir::Wait.until { b.a(id: 'DownloadCsv').visible? }
+
+        b.a(id: 'DownloadCsv').click
+      end
+
+      @raw_data = File.read(filename)
+
+      @raw_data
+    end
+
     private
 
     def default_data_filename
