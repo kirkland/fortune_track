@@ -67,7 +67,7 @@ module AccountParsers
                    when /born/
                      Credentials['capital_one']['born']
                    else
-                     raise "I don't know the answer to 'k!"
+                     raise "I don't know the answer to '#{question}'"
                    end
 
            @b.text_field(name: 'txtAnswer1').value = answer

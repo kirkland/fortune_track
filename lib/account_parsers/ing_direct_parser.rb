@@ -54,6 +54,55 @@ module AccountParsers
       @transactions
     end
 
+    def download_data
+      username = Credentials['ing_direct']['username']
+      password = Credentials['capital_one']['password']
+
+      with_browser do |b|
+        @b = b
+
+        @b.goto 'http://ingdirect.com'
+        @b.a(text: 'Sign In').click
+        @b.text_field(:id => 'ACNID').set username
+        @b.image(alt: 'Continue').click
+
+        if @b.div(:class => 'm_security_quest').exists?
+          @b.div(:class => 'm_security_quest').divs.each do |div|
+            next unless div.label.exists?
+            next if div.checkbox.exists?
+
+            question = div.label.html
+            answer = case question
+                     when /your first job located/
+                       Credentials['ing_direct']['first_job']
+                     when /your father's mother/
+                       Credentials['ing_direct']['fathers_mother']
+                     when /your father's father/
+                       Credentials['ing_direct']['fathers_father']
+                     when /your mother's middle name/
+                       Credentials['ing_direct']['mothers_middle']
+                     when /father's middle name/
+                       Credentials['ing_direct']['fathers_middle']
+                     else
+                       raise "I don't know the answer to '#{question}'"
+                     end
+
+            div.text_field.set answer
+          end
+
+          @b.image(alt: 'Continue').click
+
+          '283913'.split('').each do |digit|
+            @b.img(href: "https://images.ingdirect.com/images/secure//nimbus/pinpad/#{digit}.gif")
+              .click
+            binding.pry
+          end
+        end
+
+        binding.pry
+      end
+    end
+
     private
 
     def default_data_filename
