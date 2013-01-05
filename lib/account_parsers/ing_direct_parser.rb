@@ -90,21 +90,21 @@ module AccountParsers
           end
 
           b.image(alt: 'Continue').click
-
-          # PIN prompt.
-          password.split('').each do |digit|
-            b.img(src: "https://images.ingdirect.com/images/secure//nimbus/pinpad/#{digit}.gif")
-              .click
-          end
-          b.img(alt: 'Continue').click
-
-          # Account overview.
-          b.a(text: 'Download').click
-
-          # Download page. Downloads to file in tmp, though we don't know the name.
-          b.input(value: 'CSV').click
-          b.a(title: 'Download').click
         end
+
+        # PIN prompt.
+        password.split('').each do |digit|
+          b.img(src: "https://images.ingdirect.com/images/secure//nimbus/pinpad/#{digit}.gif")
+            .click
+        end
+        b.img(alt: 'Continue').click
+
+        # Account overview.
+        b.a(text: 'Download').click
+
+        # Download page. Downloads to file in tmp, though we don't know the name.
+        b.input(value: 'CSV').click
+        b.a(title: 'Download').click
       end
     end
 
