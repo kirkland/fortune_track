@@ -77,5 +77,20 @@ module AccountParsers
     def default_data_filename
       raise "Subclass must define this method."
     end
+
+    def with_browser
+      if !Rails.env.development?
+        h = Headless.new
+        h.start
+      end
+
+      b = Watir::Browser.new :chrome
+
+      yield b
+
+      b.close
+
+      h.destroy if !Rails.env.development?
+    end
   end
 end
