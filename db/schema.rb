@@ -11,20 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130101082223) do
+ActiveRecord::Schema.define(:version => 20130105142757) do
 
   create_table "accounts", :force => true do |t|
     t.text     "name"
     t.text     "full_name"
     t.integer  "parent_account_id"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
     t.integer  "sort_order"
     t.integer  "global_sort_order"
-    t.integer  "debit_total_amount",  :default => 0,     :null => false
-    t.string   "debit_total_code",    :default => "USD", :null => false
-    t.integer  "credit_total_amount", :default => 0,     :null => false
-    t.string   "credit_total_code",   :default => "USD", :null => false
+    t.integer  "debit_total_amount",         :default => 0,     :null => false
+    t.string   "debit_total_currency_code",  :default => "USD", :null => false
+    t.integer  "credit_total_amount",        :default => 0,     :null => false
+    t.string   "credit_total_currency_code", :default => "USD", :null => false
   end
 
   create_table "line_items", :force => true do |t|
