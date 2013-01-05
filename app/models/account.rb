@@ -168,15 +168,15 @@ class Account < ActiveRecord::Base
   end
 
   def self.unknown_expenses
-    find_by_name 'Expenses:Unknown'
+    find_by_full_name 'Expenses:Unknown'
   end
 
   def self.unknown_income
-    find_by_name 'Income:Unknown'
+    find_by_full_name 'Income:Unknown'
   end
 
   def self.unknown_asset
-    find_by_name 'Assets:Unknown'
+    find_by_full_name 'Assets:Unknown'
   end
 
   private
