@@ -59,15 +59,14 @@ module AccountParsers
       password = Credentials['ing_direct']['password']
 
       with_browser do |b|
-        @b = b
+        b.goto 'http://ingdirect.com'
+        b.a(text: 'Sign In').click
+        b.text_field(:id => 'ACNID').set username
+        b.image(alt: 'Continue').click
 
-        @b.goto 'http://ingdirect.com'
-        @b.a(text: 'Sign In').click
-        @b.text_field(:id => 'ACNID').set username
-        @b.image(alt: 'Continue').click
-
-        if @b.div(:class => 'm_security_quest').exists?
-          @b.div(:class => 'm_security_quest').divs.each do |div|
+        # Security questions.
+        if b.div(:class => 'm_security_quest').exists?
+          b.div(:class => 'm_security_quest').divs.each do |div|
             next unless div.label.exists?
             next if div.checkbox.exists?
 
@@ -90,20 +89,21 @@ module AccountParsers
             div.text_field.set answer
           end
 
-          @b.image(alt: 'Continue').click
+          b.image(alt: 'Continue').click
 
+          # PIN prompt.
           password.split('').each do |digit|
-            @b.img(src: "https://images.ingdirect.com/images/secure//nimbus/pinpad/#{digit}.gif")
+            b.img(src: "https://images.ingdirect.com/images/secure//nimbus/pinpad/#{digit}.gif")
               .click
           end
+          b.img(alt: 'Continue').click
 
-          @b.img(alt: 'Continue').click
+          # Account overview.
+          b.a(text: 'Download').click
 
-          @b.a(text: 'Download').click
-
-          @b.input(value: 'CSV').click
-          @b.a(title: 'Download').click
-
+          # Download page. Downloads to file in tmp, though we don't know the name.
+          b.input(value: 'CSV').click
+          b.a(title: 'Download').click
         end
       end
     end
