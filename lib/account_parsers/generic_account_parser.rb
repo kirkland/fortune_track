@@ -84,7 +84,12 @@ module AccountParsers
         h.start
       end
 
-      b = Watir::Browser.new :chrome
+      download_directory = File.join Rails.root, 'tmp'
+      profile = Selenium::WebDriver::Chrome::Profile.new
+      profile['download.prompt_for_download'] = false
+      profile['download.default_directory'] = download_directory
+
+      b = Watir::Browser.new :chrome, profile: profile
 
       yield b
 

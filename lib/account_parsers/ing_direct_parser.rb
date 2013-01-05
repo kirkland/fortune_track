@@ -56,7 +56,7 @@ module AccountParsers
 
     def download_data
       username = Credentials['ing_direct']['username']
-      password = Credentials['capital_one']['password']
+      password = Credentials['ing_direct']['password']
 
       with_browser do |b|
         @b = b
@@ -92,14 +92,19 @@ module AccountParsers
 
           @b.image(alt: 'Continue').click
 
-          '283913'.split('').each do |digit|
-            @b.img(href: "https://images.ingdirect.com/images/secure//nimbus/pinpad/#{digit}.gif")
+          password.split('').each do |digit|
+            @b.img(src: "https://images.ingdirect.com/images/secure//nimbus/pinpad/#{digit}.gif")
               .click
-            binding.pry
           end
-        end
 
-        binding.pry
+          @b.img(alt: 'Continue').click
+
+          @b.a(text: 'Download').click
+
+          @b.input(value: 'CSV').click
+          @b.a(title: 'Download').click
+
+        end
       end
     end
 
