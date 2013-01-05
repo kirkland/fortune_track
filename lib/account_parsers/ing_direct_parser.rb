@@ -102,10 +102,17 @@ module AccountParsers
         # Account overview.
         b.a(text: 'Download').click
 
-        # Download page. Downloads to file in tmp, though we don't know the name.
+        # Download page. Downloads to file in tmp.
         b.input(value: 'CSV').click
         b.a(title: 'Download').click
       end
+
+      # Find the most recently modified csv file.
+      tmp = File.join(Rails.root, 'tmp')
+      csv_files = Dir.glob(File.join(tmp, '*.csv'))
+      last_csv_file = csv_files.sort_by { |x| File.stat(x).mtime }.last
+
+      @raw_data = File.read(last_csv_file)
     end
 
     private
