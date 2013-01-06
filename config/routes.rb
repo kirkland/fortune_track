@@ -14,5 +14,7 @@ PersonalAccounting::Application.routes.draw do
     end
   end
 
+  resources :account_imports, only: [:new, :create]
+
   root :to => 'reports#expense_report'
 end
