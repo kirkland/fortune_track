@@ -49,6 +49,35 @@ module AccountParsers
       @transactions
     end
 
+    def download_data
+      username = Credentials['central_bank']['username']
+      password = Credentials['central_bank']['password']
+
+      filename = File.join(Rails.root, 'tmp', 'Export.csv')
+      FileUtils.rm filename if File.exists? filename
+
+      with_browser do |b|
+        begin
+          b.goto 'https://www.centralbk.com/index.html'
+          b.text_field(name: 'userid').set username
+          b.text_field(name: 'password').set password
+          b.input(name: 'enter').click
+
+          Watir::Wait.until { b.iframe(name: 'uspbody').exists? }
+          iframe = b.iframe(name: 'uspbody')
+          iframe.a(text: 'FREE CHECKING').click
+          iframe.span(id: 'extraLabel').click
+          iframe.span(text: 'show in 30 day increments').click
+          iframe.button(text: 'Export').click
+          iframe.buttons(text: 'Export').last.click # Different button than previous line.
+        rescue => e
+          binding.pry
+        end
+      end
+
+      @raw_data = File.read(filename)
+    end
+
     private
 
     def default_data_filename
