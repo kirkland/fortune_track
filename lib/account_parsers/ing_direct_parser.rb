@@ -20,7 +20,7 @@ module AccountParsers
         next if row[0] == 'BANK ID' || row.blank?
 
         transaction = Transaction.new
-        transaction.unique_code = row.join(',')
+        transaction.unique_code = [row[1], row[7], row[8], row[9], row[10]].join(',')
         transaction.date = Date.parse row[7]
         transaction.description = row[10]
 
