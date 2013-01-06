@@ -1,6 +1,12 @@
 %h1 New Account Import
 
-= form_tag account_imports_path do
-  %label Importer Class
-  = select_tag 'importer_class',
-    options_from_collection_for_select(@parsers, 'to_s', 'to_s')
+= form_tag account_imports_path, multipart: true do
+  %p
+    %label Importer Class
+    = select_tag 'importer_class',
+      options_from_collection_for_select(@parsers, 'to_s', 'to_s')
+  %p
+    %label File
+    = file_field_tag 'file'
+  %p
+    = submit_tag 'Start Import'
