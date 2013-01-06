@@ -73,8 +73,6 @@ module AccountParsers
       end
 
       @raw_data = File.read(filename)
-
-      @raw_data
     end
 
     private

@@ -46,6 +46,35 @@ module AccountParsers
       @transactions
     end
 
+    def download_data
+      username = Credentials['bank_of_america']['username']
+      password = Credentials['bank_of_america']['password']
+
+      filename = File.join(Rails.root, 'tmp', 'stmt.csv')
+      FileUtils.rm filename if File.exists? filename
+
+      with_browser do |b|
+        b.goto 'https://www.bankofamerica.com/'
+        b.text_field(name: 'id').set username
+        b.select(name: 'stateselect').select 'Massachusetts'
+        b.input(id: 'top-button').click
+
+        Watir::Wait.until { b.h2(text: 'Your SiteKey').exists? }
+        b.text_field(type: 'password').set password
+        b.span(text: 'Sign in').click
+
+        b.a(id: 'PRIMARY').click
+
+        b.a(text: 'Download').click
+
+        b.label(for: 'transactionRange').click
+        b.label(for: 'csv_format').click
+        b.a(title: 'Download').click
+      end
+
+      @raw_data = File.read(filename)
+    end
+
     private
 
     def default_data_filename
