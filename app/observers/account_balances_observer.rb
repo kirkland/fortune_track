@@ -5,14 +5,14 @@ class AccountBalancesObserver < ActiveRecord::Observer
     if record.is_a? LineItem
       record.account.update_balances!
 
-      if record.account_id_changed?
+      if record.account_id_changed? && record.account_id_was.present?
         Account.find(record.account_id_was).update_balances!
       end
     else
       record.line_items.each do |line_item|
         line_item.account.update_balances!
 
-        if line_item.account_id_changed?
+        if line_item.account_id_changed? && line_item.account_id_was.present?
           Account.find(line_item.account_id_was).update_balances!
         end
       end
