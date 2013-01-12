@@ -99,6 +99,18 @@ class Account < ActiveRecord::Base
     child_accounts.count > 0
   end
 
+  def natural_balance
+    natural_debit_balance? ? family_debit_balance : family_credit_balance
+  end
+
+  def natural_credit_balance?
+    full_name =~ /^(Equity|Liabilities|Income):/
+  end
+
+  def natural_debit_balance?
+    full_name =~ /^(Expense|Assets):/
+  end
+
   def self.net_worth
     Account.find_by_full_name('Assets').family_debit_balance -
       Account.find_by_full_name('Liabilities').family_credit_balance
