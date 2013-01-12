@@ -101,7 +101,7 @@ class Account < ActiveRecord::Base
 
   def self.net_worth
     Account.find_by_full_name('Assets').family_debit_balance -
-      Account.find_by_full_name('Liabilities').family_debit_balance
+      Account.find_by_full_name('Liabilities').family_credit_balance
   end
 
   def self.populate_sort_order
