@@ -8,8 +8,8 @@ module AccountsHelper
   end
 
   def show_children?(account)
-    true
     account.depth < 1
+    true
   end
 
   def has_visible_children?(account)
