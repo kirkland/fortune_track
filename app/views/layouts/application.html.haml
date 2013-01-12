@@ -20,7 +20,7 @@
         %li= link_to 'Import', new_account_import_path
       #net_worth
         Net Worth:
-        = Account.net_worth
+        = Account.net_worth.format
     .clear
     - if flash[:error].present?
       = flash[:error].inspect
