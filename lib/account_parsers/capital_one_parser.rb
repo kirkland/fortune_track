@@ -14,6 +14,9 @@ module AccountParsers
       @rows = @n.css('tr.trxSummayRow')
 
       @rows.each do |row|
+        # Pending transaction; ignore.
+        next if row.attr(:id) =~ /Pending/
+
         tds = row.css('td').to_a
 
         date = parse_date(tds[0].content.strip)
