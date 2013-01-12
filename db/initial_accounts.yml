@@ -1,7 +1,9 @@
 - Assets:
   - Cash:
     - Currency
-    - Central Bank
+    - Central Bank:
+      - Savings
+      - Checking
     - ING Direct:
       - Savings
       - Checking
