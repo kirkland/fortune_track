@@ -1,5 +1,5 @@
 PersonalAccounting::Application.routes.draw do
-  resources :accounts, except: [:show, :destroy]
+  resources :accounts, except: [:destroy]
 
   resources :transactions, except: [:destroy] do
     collection do
