@@ -13,7 +13,7 @@ gem 'money'
 gem 'nokogiri'
 gem 'pg'
 gem 'pry'
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 gem 'sqlite3'
 gem 'watir-webdriver'
 
