@@ -1,12 +1,13 @@
-.account_row{ :class => show_children?(account) ? '' : 'hide_children' }
-  .name
-    .indent{style: "padding-left: #{indent(account)}"}
-      -if has_visible_children? account
-        %span.toggler.shower= link_to '+', '#'
-        %span.toggler.hider= link_to '-', '#'
-      =link_to account.name, account_path(account)
-  .debit= account.family_debit_balance.format
-  .credit= account.family_credit_balance.format
+.account_group{ :class => show_children?(account) ? '' : 'hide_children' }
+  .account_row
+    .name
+      .indent{style: "padding-left: #{indent(account)}"}
+        -if has_visible_children? account
+          %span.toggler.shower= link_to '+', '#'
+          %span.toggler.hider= link_to '-', '#'
+        =link_to account.name, account_path(account)
+    .debit= account.family_debit_balance.format
+    .credit= account.family_credit_balance.format
 
   - account.child_accounts.order(:sort_order).each do |child|
     - if show_account?(child)

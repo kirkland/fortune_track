@@ -8,12 +8,12 @@
   %input{type: 'submit'}
 
 #accounts
-  .account_row.header
+  .account_group.header
     .name Account
     Amount
 
   - @report_rows.each do |row|
-    .account_row
+    .account_group
       .name
         .indent{style: "padding-left: #{indent(row.account)}"}
           = row.account.name

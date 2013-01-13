@@ -11,7 +11,7 @@
     = link_to 'show all', accounts_path(show_all: true)
 
 #accounts
-  .account_row.header
+  .account_group.header
     .name Account
     .debit Debit
     .credit Credit
@@ -26,6 +26,6 @@
 -content_for :ready_js do
   :plain
     $('.toggler').click(function(event) {
-      $(event.target).closest('.account_row').toggleClass('hide_children');
+      $(event.target).closest('.account_group').toggleClass('hide_children');
       return false;
     });
