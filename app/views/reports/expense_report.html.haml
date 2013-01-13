@@ -14,7 +14,12 @@
 
   - @report_rows.each do |row|
     .account_group
-      .name
-        .indent{style: "padding-left: #{indent(row.account)}"}
-          = row.account.name
-      = row.amount
+      .account_row
+        .name
+          .indent{style: "padding-left: #{indent(row.account)}"}
+            = row.account.name
+        = row.amount
+
+-content_for :ready_js do
+  :plain
+    shadeEveryOtherRow();

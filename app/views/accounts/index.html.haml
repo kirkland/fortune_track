@@ -25,7 +25,10 @@
 
 -content_for :ready_js do
   :plain
+    shadeEveryOtherRow();
+
     $('.toggler').click(function(event) {
       $(event.target).closest('.account_group').toggleClass('hide_children');
+      shadeEveryOtherRow();
       return false;
     });
