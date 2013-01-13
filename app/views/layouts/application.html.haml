@@ -21,6 +21,12 @@
       #net_worth
         Net Worth:
         = Account.net_worth.format
+      #recent_imports
+        - AccountImporters::ALL.each do |import_class|
+          = import_class.to_s
+          \:
+          = AccountImport.successful.recent.where(importer_class_name: import_class.to_s).first.try(:started_at)
+
     .clear
     - if flash[:error].present?
       = flash[:error].inspect

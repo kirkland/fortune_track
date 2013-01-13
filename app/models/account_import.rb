@@ -3,10 +3,13 @@ class AccountImport < ActiveRecord::Base
 
   after_create :start_import
 
+  scope :successful, where(successful: true)
+  scope :recent, order('started_at DESC')
+
   private
 
   def start_import
-    self.started_at = Time.zone.now
+    self.started_at = Time.now
     save!
 
     importer = importer_class_name.constantize.new
