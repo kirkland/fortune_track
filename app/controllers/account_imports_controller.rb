@@ -1,25 +1,26 @@
 class AccountImportsController < ApplicationController
   def new
-    @parsers = AccountParsers::ALL
+    @parsers = AccountImporters::ALL
   end
 
   def create
-    importer_class = params[:importer_class].constantize
+    account_import = AccountImport.new
+    account_import.importer_class_name = params[:importer_class]
 
-    if !AccountParsers::ALL.include? importer_class
+    # TODO: Move to model validation.
+    if !AccountImporters::ALL.include? account_import.importer_class_name.constantize
       raise 'That is not an importer class, hacker.'
     end
 
-    p = importer_class.new
-
     if params[:file].present?
-      p.raw_data = params[:file].read
-      new_transactions = p.create_new_transactions
-    else
-      new_transactions = p.download_and_create_transactions
+      account_import.data = params[:file].read
     end
 
-    flash[:notice] = "Added #{new_transactions.count} new transactions."
+    if account_import.save
+      flash[:notice] = "New transactions on the way!"
+    else
+      flash[:error] = account_import.errors.inspect
+    end
 
     redirect_to root_path
   end
