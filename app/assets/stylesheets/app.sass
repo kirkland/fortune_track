@@ -64,25 +64,6 @@ th
     clear: both
     div
       float: left
-    .name
-      width: 400px
-      .edit a
-        font-size: 8px
-    .debit
-      width: 200px
-    .credit
-      width: 200px
-    .hider
-      display: inline
-    .shower
-      display: none
-    &.hide_children
-      .hider
-        display: none
-      .shower
-        display: inline
-      .account_group
-        display: none
 
 form
   margin-top: 20px
@@ -91,3 +72,24 @@ form
 .account_row
   &.shade
     background-color: darken(white, 15%)
+  > div
+    width: 200px
+  .name
+    width: 400px
+    .edit a
+      font-size: 8px
+  .debit
+    width: 200px
+  .credit
+    width: 200px
+  .hider
+    display: inline
+  .shower
+    display: none
+  &.hide_children
+    .hider
+      display: none
+    .shower
+      display: inline
+    .account_group
+      display: none
