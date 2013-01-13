@@ -1,7 +1,7 @@
 require 'csv'
 
-module AccountParsers
-  class BankOfAmericaParser < GenericAccountParser
+module AccountImporters
+  class BankOfAmericaImporter < GenericAccountImporter
 
     include BankAccount
 

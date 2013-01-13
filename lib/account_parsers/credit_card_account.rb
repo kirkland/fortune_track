@@ -1,4 +1,4 @@
-module AccountParsers::CreditCardAccount
+module AccountImporters::CreditCardAccount
   def credit_account
     @credit_account ||= Account.unknown_asset
   end

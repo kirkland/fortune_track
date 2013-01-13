@@ -1,7 +1,7 @@
 require 'csv'
 
-module AccountParsers
-  class ChaseParser < GenericAccountParser
+module AccountImporters
+  class ChaseImporter < GenericAccountImporter
 
     include CreditCardAccount
 

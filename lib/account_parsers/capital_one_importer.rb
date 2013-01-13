@@ -1,5 +1,5 @@
-module AccountParsers
-  class CapitalOneParser < GenericAccountParser
+module AccountImporters
+  class CapitalOneImporter < GenericAccountImporter
 
     include CreditCardAccount
 

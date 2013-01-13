@@ -1,5 +1,5 @@
-module AccountParsers
-  class GenericAccountParser
+module AccountImporters
+  class GenericAccountImporter
     attr_accessor :raw_data, :transactions
 
     def initialize

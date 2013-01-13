@@ -1,7 +1,7 @@
 require 'csv'
 
-module AccountParsers
-  class IngDirectParser < GenericAccountParser
+module AccountImporters
+  class IngDirectImporter < GenericAccountImporter
 
     include BankAccount
 
