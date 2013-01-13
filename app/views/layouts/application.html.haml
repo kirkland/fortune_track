@@ -21,11 +21,10 @@
       #net_worth
         Net Worth:
         = Account.net_worth.format
+    - if outdated = AccountImport.outdated.presence
       #recent_imports
-        - AccountImporters::ALL.each do |import_class|
-          = import_class.to_s
-          \:
-          = AccountImport.successful.recent.where(importer_class_name: import_class.to_s).first.try(:started_at)
+        Outdated:
+        = outdated.inspect
 
     .clear
     - if flash[:error].present?
