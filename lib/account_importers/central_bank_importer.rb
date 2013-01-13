@@ -6,7 +6,7 @@ module AccountImporters
     include BankAccount
 
     def primary_account
-      @primary_account ||= Account.all.detect{|x| x.name =~ /Central Bank:Checking/}
+      @primary_account ||= Account.all.detect{|x| x.full_name =~ /Central Bank:Checking/}
     end
 
     def build_transactions
