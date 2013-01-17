@@ -5,6 +5,10 @@ module AccountImporters
 
     include BankAccount
 
+    def download_capable
+      false
+    end
+
     def primary_account
       @primary_account ||= Account.all.detect{|x| x.name =~ /Bank of America/}
     end

@@ -5,6 +5,10 @@ module AccountImporters
 
     include BankAccount
 
+    def download_capable
+      true
+    end
+
     # Since we get data for multiple ING accounts at once, we need to specify the account_id
     # in order to know which account to use.
     def primary_account(account_id)

@@ -5,6 +5,10 @@ module AccountImporters
 
     include CreditCardAccount
 
+    def download_capable
+      true
+    end
+
     def primary_account
       @primary_account ||= Account.all.detect{|x| x.name =~ /Amazon/}
     end
