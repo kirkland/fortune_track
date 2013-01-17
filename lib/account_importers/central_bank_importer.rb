@@ -5,7 +5,7 @@ module AccountImporters
 
     include BankAccount
 
-    def download_capable
+    def self.download_capable
       false
     end
 

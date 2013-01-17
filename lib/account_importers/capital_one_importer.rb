@@ -3,7 +3,7 @@ module AccountImporters
 
     include CreditCardAccount
 
-    def download_capable
+    def self.download_capable
       true
     end
 
