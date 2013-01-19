@@ -1,0 +1,11 @@
+.account_group
+  .account_row
+    .name
+      .indent{style: "padding-left: #{indent(row.account)}"}
+        =link_to row.account.name, account_path(row.account)
+    .amount= row.debit
+
+  - row.child_rows.each do |child|
+    - if child.debit > 0
+      = render 'expense_report_row', row: child
+

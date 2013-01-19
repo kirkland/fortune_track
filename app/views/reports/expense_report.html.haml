@@ -13,12 +13,7 @@
     .amount Amount
 
   - @report_rows.each do |row|
-    .account_group
-      .account_row
-        .name
-          .indent{style: "padding-left: #{indent(row.account)}"}
-            = row.account.name
-        %div= row.debit
+    = render 'expense_report_row', row: row
 
 -content_for :ready_js do
   :plain
