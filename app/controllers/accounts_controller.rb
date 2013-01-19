@@ -25,6 +25,12 @@ class AccountsController < ApplicationController
   def show
     @account = Account.find(params[:id])
     @transactions = @account.transactions
+    if params[:start_date].present?
+      @transactions = @transactions.where('date >= ?', params[:start_date])
+    end
+    if params[:end_date].present?
+      @transactions = @transactions.where('date <= ?', params[:end_date])
+    end
   end
 
   def update
