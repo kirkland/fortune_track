@@ -1,12 +1,11 @@
-module Reports
-  class ExpenseReport
+module Report
+  class ExpenseReport < GenericReport
     def initialize(start_date, end_date)
-      @start_date = start_date
-      @end_date = end_date
-
-      raise "start_date must be before end_date" if @start_date > @end_date
+      accounts = [Account.find_by_full_name('Expenses')]
+      super(accounts, start_date, end_date)
     end
 
+    # TODO: Remove this. It's not used anymore.
     def report
       @accounts = Account.all.select { |x| x.full_name =~ /^Expense/ }
 

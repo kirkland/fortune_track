@@ -10,8 +10,7 @@
 #accounts
   .account_group.header
     .name Account
-    Amount
-    Percent Total
+    .amount Amount
 
   - @report_rows.each do |row|
     .account_group
@@ -19,8 +18,7 @@
         .name
           .indent{style: "padding-left: #{indent(row.account)}"}
             = row.account.name
-        %div= row.values[:amount]
-        %div= row.values[:percent_total]
+        %div= row.debit
 
 -content_for :ready_js do
   :plain

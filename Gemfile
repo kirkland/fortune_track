@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'ap'
+gem 'awesome_print'
 gem 'capistrano'
 gem 'crack'
 gem 'factory_girl', '4.1.0'
