@@ -1,3 +1,5 @@
+# Inactive because I closed the account.
+
 require 'csv'
 
 module AccountImporters

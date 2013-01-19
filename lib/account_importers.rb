@@ -1,3 +1,3 @@
 module AccountImporters
-  ALL = [CapitalOneImporter, BankOfAmericaImporter, ChaseImporter, IngDirectImporter, CentralBankImporter]
+  ALL = [CapitalOneImporter, BankOfAmericaImporter, ChaseImporter, IngDirectImporter]
 end
