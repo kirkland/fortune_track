@@ -142,13 +142,13 @@ class Account < ActiveRecord::Base
     end
   end
 
-  def descendents
+  def descendants
     return [] if child_accounts.blank?
 
     rv = []
     child_accounts.sort_by { |x| x.sort_order.to_i }.collect do |child|
       rv << child
-      rv << child.descendents
+      rv << child.descendants
     end
 
     rv.flatten
@@ -237,7 +237,7 @@ class Account < ActiveRecord::Base
       Account.where(parent_account_id: nil).sort_by {|x| x.sort_order }.each do |account|
         accounts << account
 
-        accounts += account.descendents
+        accounts += account.descendants
       end
 
       accounts.each_with_index do |account, index|
