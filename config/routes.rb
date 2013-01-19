@@ -11,6 +11,7 @@ PersonalAccounting::Application.routes.draw do
   resources :reports, only: [] do
     collection do
       get :expense_report
+      get :income_report
     end
   end
 

@@ -1,0 +1,21 @@
+%form
+  %label{for: 'start_date'} Start Date
+  %input{name: 'start_date', value: @start_date || Time.now.beginning_of_month.to_date}
+
+  %label{for: 'end_date'} End Date
+  %input{name: 'end_date', value: @end_date || Time.now.to_date}
+
+  %input{type: 'submit'}
+
+#accounts
+  .account_group.account_row.header
+    .name Account
+    .amount Amount
+    .self_amount Self Amount
+
+  - @report_rows.each do |row|
+    = render 'expense_report_row', row: row
+
+-content_for :ready_js do
+  :plain
+    shadeEveryOtherRow();
