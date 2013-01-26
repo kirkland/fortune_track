@@ -91,7 +91,15 @@ module AccountImporters
 
       b = Watir::Browser.new :chrome, profile: profile
 
-      yield b
+      begin
+        yield b
+      rescue => e
+        if Rails.env.development?
+          binding.pry
+        else
+          raise e
+        end
+      end
 
       b.close
 

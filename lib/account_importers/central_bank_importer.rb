@@ -76,8 +76,6 @@ module AccountImporters
           iframe.span(text: 'show in 30 day increments').click
           iframe.button(text: 'Export').click
           iframe.buttons(text: 'Export').last.click # Different button than previous line.
-        rescue => e
-          binding.pry
         end
       end
 

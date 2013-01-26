@@ -63,7 +63,14 @@ module AccountImporters
         b.select(name: 'stateselect').select 'Massachusetts'
         b.input(id: 'top-button').click
 
-        Watir::Wait.until { b.h2(text: 'Your SiteKey').exists? }
+        Watir::Wait.until { b.form(id: 'VerifyCompForm').exists? }
+        if b.label(for: 'tlpvt-challenge-answer').text =~ /graduate from high school/
+          b.text_field(id: 'tlpvt-challenge-answer').set
+            Credentials['bank_of_america']['high_school_graduation']
+        end
+        b.a(title: 'Continue').click
+
+        Watir::Wait.until { b.text_field(type: 'password').exists? }
         b.text_field(type: 'password').set password
         b.span(text: 'Sign in').click
 
