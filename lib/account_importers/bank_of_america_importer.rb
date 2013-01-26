@@ -68,16 +68,22 @@ module AccountImporters
           b.form(id: 'VerifyCompForm').exists? || b.text_field(type: 'password').exists?
         end
 
+        save_screenshot b
+
         if b.form(id: 'VerifyCompForm').exists?
+          save_screenshot b
           case b.label(for: 'tlpvt-challenge-answer').text
           when /graduate from high school/
             b.text_field(id: 'tlpvt-challenge-answer').set
               Credentials['bank_of_america']['high_school_graduation']
+            save_screenshot b
           when /first name of your first child/
             b.text_field(id: 'tlpvt-challenge-answer').set
               Credentials['bank_of_america']['first_child_first_name']
+            save_screenshot b
           end
 
+          save_screenshot b
           b.a(title: 'Continue').click
         end
 
