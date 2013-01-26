@@ -62,6 +62,12 @@ module AccountImporters
       create_new_transactions
     end
 
+    def save_screenshot(browser)
+      download_directory = File.join Rails.root, 'tmp'
+      browser.screenshot.save File.join(download_directory,
+        "#{Time.now.to_i}_#{self.class.name}.png")
+    end
+
     private
 
     def subclass_must_define
@@ -97,6 +103,7 @@ module AccountImporters
         if Rails.env.development?
           binding.pry
         else
+          save_screenshot b
           raise e
         end
       end
