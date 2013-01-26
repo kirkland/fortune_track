@@ -72,6 +72,10 @@ module AccountImporters
           answer = case b.label(for: 'tlpvt-challenge-answer').text
             when /maternal grandmother's first name/
               Credentials['bank_of_america']['maternal_grandmothers_name']
+            when /father's middle name/
+              Credentials['bank_of_america']['fathers_middle_name']
+            when /mother was born/
+              Credentials['bank_of_america']['mother_born']
             when /graduate from high school/
               Credentials['bank_of_america']['high_school_graduation']
             when /first name of your first child/
