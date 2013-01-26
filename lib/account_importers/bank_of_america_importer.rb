@@ -69,9 +69,13 @@ module AccountImporters
         end
 
         if b.form(id: 'VerifyCompForm').exists?
-          if b.label(for: 'tlpvt-challenge-answer').text =~ /graduate from high school/
+          case b.label(for: 'tlpvt-challenge-answer').text
+          when /graduate from high school/
             b.text_field(id: 'tlpvt-challenge-answer').set
               Credentials['bank_of_america']['high_school_graduation']
+          when /first name of your first child/
+            b.text_field(id: 'tlpvt-challenge-answer').set
+              Credentials['bank_of_america']['first_child_first_name']
           end
 
           b.a(title: 'Continue').click
