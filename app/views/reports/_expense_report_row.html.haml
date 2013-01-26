@@ -3,8 +3,8 @@
     .name
       .indent{style: "padding-left: #{indent(row.account)}"}
         =link_to row.account.name, account_path(row.account, start_date: @start_date, end_date: @end_date)
-    .amount= row.debit
-    .self_amount= row.self_debit
+    .amount= row.debit.format
+    .self_amount= row.self_debit.format
 
   - row.child_rows.each do |child|
     - if child.debit > 0
