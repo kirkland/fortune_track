@@ -78,6 +78,10 @@ module AccountImporters
               Credentials['bank_of_america']['high_school_graduation']
             save_screenshot b
           when /first name of your first child/
+            puts "about to intput: #{Credentials['bank_of_america']['first_child_first_name']}"
+            logger.info "about to intput: #{Credentials['bank_of_america']['first_child_first_name']}"
+            puts "does text field exist? #{b.text_field(id: 'tlpvt-challenge-answer').exists?}"
+            logger.info "does text field exist? #{b.text_field(id: 'tlpvt-challenge-answer').exists?}"
             b.text_field(id: 'tlpvt-challenge-answer').set
               Credentials['bank_of_america']['first_child_first_name']
             save_screenshot b
