@@ -82,6 +82,8 @@ module AccountImporters
 
           b.text_field(id: 'tlpvt-challenge-answer').set answer
 
+          save_screenshot b
+
           b.a(title: 'Continue').click
         end
 
