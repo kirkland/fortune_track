@@ -12,6 +12,7 @@ PersonalAccounting::Application.routes.draw do
     collection do
       get :expense_report
       get :income_report
+      get :net_worth_report
     end
   end
 

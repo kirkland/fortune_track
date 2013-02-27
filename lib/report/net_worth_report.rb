@@ -5,7 +5,7 @@ module Report
     attr_reader :report_rows
 
     def initialize
-      @start_date = Date.new 2013
+      @start_date = Date.new 2013, 1, 12
       @end_date = Transaction.first.date
       @report_rows = []
     end
@@ -18,16 +18,17 @@ module Report
           .where('transactions.duplicate_transaction_id IS NULL')
           .where(account_id: Account.where('full_name LIKE ?', 'Assets:%').collect(&:id)).all
 
-        asset_balance = asset_lis.sum(&:debit_amount) - asset_lis.sum(&:credit_amount)
+        asset_balance = asset_lis.sum(&:debit) - asset_lis.sum(&:credit)
 
         liability_lis = LineItem.includes(:transaction).where('transactions.date < ?', date)
           .where(account_id: Account.where('full_name LIKE ?', 'Liabilities:%').collect(&:id)).all
 
-        liability_balance = liability_lis.sum(&:credit_amount) - liability_lis.sum(&:debit_amount)
+        liability_balance = liability_lis.sum(&:credit) - liability_lis.sum(&:debit)
 
-
-        Row.new(date, (asset_balance - liability_balance).to_money)
+        Row.new(date, (asset_balance - liability_balance))
       end
+
+      @report_rows.reject{|x| x.amount < 0} # Reject early, nonsensical balances.
     end
   end
 end

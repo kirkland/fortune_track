@@ -1,0 +1,14 @@
+%table
+  %tr
+    %th
+      Date
+    %th
+      Amount
+  - @report_rows.each do |row|
+    %tr
+      %td= row.date
+      %td= row.amount.format
+
+-content_for :ready_js do
+  :plain
+    shadeEveryOtherRow();
