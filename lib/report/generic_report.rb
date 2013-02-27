@@ -17,7 +17,7 @@ module Report
     # Usage: Pass in only your "top level" accounts, because descedants
     # will be automatically included.
     def initialize(accounts, start_date, end_date)
-      @start_date = start_date.nil? ? Transaction.first.date : start_date
+      @start_date = start_date.nil? ? Transaction.last.date : start_date
       @end_date = end_date
       @accounts = accounts
 

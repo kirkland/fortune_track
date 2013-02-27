@@ -12,4 +12,8 @@ class ReportsController < ApplicationController
 
     @report_rows = Report::IncomeReport.new(@start_date, @end_date).run
   end
+
+  def net_income_report
+    @report_rows = Report::NetWorthReport.new.run
+  end
 end
