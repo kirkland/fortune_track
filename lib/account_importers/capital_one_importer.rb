@@ -85,6 +85,9 @@ module AccountImporters
 
         @b.select(name: 'ddlQuickView').select('Last 90 Days')
 
+        # Needed to refresh page.
+        @b.send_keys :tab
+
         @raw_data = @b.html
       end
 
