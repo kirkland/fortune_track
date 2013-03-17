@@ -18,3 +18,4 @@
 notes/sample_data
 chromedriver.log
 config/credentials.yml
+fortune_track_production.sql
