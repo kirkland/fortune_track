@@ -15,6 +15,16 @@ class Transaction < ActiveRecord::Base
 
   default_scope where('duplicate_transaction_id IS NULL').order('date DESC')
 
+  # Changing how unique_code is calculated for CapOne, so need to update existing ones.
+  def self.update_capital_one_unique_codes
+    Account.find(433).transactions.each do |t|
+      old = t.unique_code
+      split = old.split(':') rescue ['a', 'b', 'c', 'd']
+      t.unique_code = %{#{split[0]}:#{split[1]}:#{split[3]}}
+      t.save!
+    end
+  end
+
   private
 
   def debits_equals_credits
