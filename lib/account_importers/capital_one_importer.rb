@@ -28,7 +28,7 @@ module AccountImporters
         category = tds[2].content.strip
         amount_string = tds[3].content.strip.sub(/\$/, '')
         amount = amount_string.to_money
-        unique_code = "#{date}:#{description}:#{category}:#{amount}"
+        unique_code = "#{date}:#{description}:#{amount}"
 
         transaction = Transaction.new
         transaction.unique_code = unique_code
