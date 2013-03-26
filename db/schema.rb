@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130326001901) do
+ActiveRecord::Schema.define(:version => 20130326020613) do
 
   create_table "account_imports", :force => true do |t|
     t.datetime "created_at",          :null => false
@@ -33,6 +33,8 @@ ActiveRecord::Schema.define(:version => 20130326001901) do
     t.integer  "credit_total_amount",        :default => 0,     :null => false
     t.string   "credit_total_currency_code", :default => "USD", :null => false
   end
+
+  add_index "accounts", ["parent_account_id"], :name => "index_accounts_on_parent_account_id"
 
   create_table "archived_accounts", :primary_key => "primary_id", :force => true do |t|
     t.integer  "id",                :null => false
