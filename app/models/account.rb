@@ -17,22 +17,6 @@ class Account < ActiveRecord::Base
   money :debit_total
   money :credit_total
 
-  # TEMP
-
-  def balance_until(date)
-    (credit_total_until(date) - debit_total_until(date)).format
-  end
-
-  def credit_total_until(date)
-    line_items.where('date <= ?', date).all.sum(&:credit).to_money
-  end
-
-  def debit_total_until(date)
-    line_items.where('date <= ?', date).all.sum(&:debit).to_money
-  end
-
-  # END TEMP
-
   # Basic balances.
 
   def calculate_debit_total
