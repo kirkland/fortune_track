@@ -1,7 +1,7 @@
 class Account < ActiveRecord::Base
   include Monetizable
 
-  attr_accessible :name, :parent_account, :parent_account_id, :sort_order
+  attr_accessible :name, :parent_account, :parent_account_id
 
   belongs_to :parent_account, class_name: 'Account'
   has_many :child_accounts, class_name: 'Account', foreign_key: 'parent_account_id'
@@ -11,10 +11,8 @@ class Account < ActiveRecord::Base
   validate :no_parent_cycle
 
   before_save :update_related_full_names!
-  before_save :update_sort_order
-  after_save :update_global_sort_order
 
-  default_scope order(:global_sort_order)
+  default_scope order('accounts.full_name')
 
   money :debit_total
   money :credit_total
@@ -85,14 +83,6 @@ class Account < ActiveRecord::Base
     family_credit_total > family_debit_total ? family_credit_total - family_debit_total : 0.to_money
   end
 
-  def compact_children_sort_order
-    index = 1
-    child_accounts.order(:sort_order).each do |account|
-      account.update_column :sort_order, index
-      index += 1
-    end
-  end
-
   def depth
     parent_account_id.blank? ? 0 : 1 + parent_account.depth
   end
@@ -132,20 +122,6 @@ class Account < ActiveRecord::Base
       Account.find_by_full_name('Liabilities').family_credit_balance
   end
 
-  def self.populate_sort_order
-    Account.where(sort_order: nil).each do |account|
-      sort_order = 1
-
-      already_sorted = account.reload.siblings.where('sort_order IS NOT NULL')
-      if already_sorted.present?
-        sort_order = already_sorted.collect(&:sort_order).sort.last + 1
-      end
-
-      account.sort_order = sort_order
-      account.save!
-    end
-  end
-
   def siblings
     new_record? ? siblings_with_self : siblings_with_self.where("id != ?", id)
   end
@@ -162,7 +138,7 @@ class Account < ActiveRecord::Base
     return [] if child_accounts.blank?
 
     rv = []
-    child_accounts.sort_by { |x| x.sort_order.to_i }.collect do |child|
+    child_accounts.collect do |child|
       rv << child
       rv << child.descendants
     end
@@ -217,47 +193,6 @@ class Account < ActiveRecord::Base
 
       if current == self
         errors.add(:parent_account, 'cannot create a cycle in parent accounts')
-      end
-    end
-  end
-
-  def update_sort_order
-    if new_record?
-
-      self.sort_order = siblings.count + 1
-
-    elsif sort_order_changed?
-
-      moved_up = sort_order < sort_order_was.to_i
-
-      # Use update_all to avoid after_save callbacks on other accounts.
-      if moved_up
-        siblings.where('sort_order >= ? AND sort_order < ?', sort_order, sort_order_was)
-          .update_all('sort_order = sort_order + 1')
-      else
-        siblings.where('sort_order <= ? AND sort_order > ?', sort_order, sort_order_was)
-          .update_all('sort_order = sort_order - 1')
-      end
-
-    elsif parent_account_id_changed?
-
-      self.sort_order = siblings.count + 1
-
-    end
-  end
-
-  def update_global_sort_order
-    if sort_order_changed? || parent_account_id_changed?
-      accounts = []
-
-      Account.where(parent_account_id: nil).sort_by {|x| x.sort_order }.each do |account|
-        accounts << account
-
-        accounts += account.descendants
-      end
-
-      accounts.each_with_index do |account, index|
-        account.update_column :global_sort_order, index + 1
       end
     end
   end

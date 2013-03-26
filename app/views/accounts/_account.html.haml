@@ -9,6 +9,6 @@
     .debit= account.family_debit_balance.format
     .credit= account.family_credit_balance.format
 
-  - account.child_accounts.order(:sort_order).each do |child|
+  - account.child_accounts.each do |child|
     - if show_account?(child)
       = render child

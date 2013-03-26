@@ -16,7 +16,7 @@
     .debit Debit
     .credit Credit
 
-  - @accounts.order(:sort_order).each do |account|
+  - @accounts.each do |account|
     - if show_account?(account)
       = render account
 
