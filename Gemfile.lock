@@ -51,7 +51,6 @@ GEM
       execjs
     coffee-script-source (1.4.0)
     crack (0.3.2)
-    dalli (2.6.2)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -173,7 +172,6 @@ DEPENDENCIES
   capistrano
   coffee-rails (~> 3.2.1)
   crack
-  dalli
   factory_girl (= 4.1.0)
   faker (= 0.9.5)
   formtastic

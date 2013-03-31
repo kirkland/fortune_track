@@ -47,24 +47,12 @@ class Account < ActiveRecord::Base
 
   # Family balances.
 
-  def family_debit_cache_key
-    "family_debit_total:#{id}"
-  end
-
   def family_debit_total
-    Rails.cache.fetch(family_debit_cache_key) do
-      debit_total + child_accounts.sum(&:family_debit_total).to_money
-    end
-  end
-
-  def family_credit_cache_key
-    "family_credit_total:#{id}"
+    debit_total + child_accounts.sum(&:family_debit_total).to_money
   end
 
   def family_credit_total
-    Rails.cache.fetch(family_credit_cache_key) do
-      credit_total + child_accounts.sum(&:family_credit_total).to_money
-    end
+    credit_total + child_accounts.sum(&:family_credit_total).to_money
   end
 
   def family_balance_type
