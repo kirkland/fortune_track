@@ -5,7 +5,7 @@ module Report
     attr_reader :report_rows
 
     def initialize
-      @start_date = Date.new 2013, 1, 12
+      @start_date = Date.new 2013, 2, 1
       @end_date = Transaction.first.date
       @report_rows = []
     end
