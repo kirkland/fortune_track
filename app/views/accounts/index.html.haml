@@ -1,5 +1,9 @@
 %h1 Accounts
 
+#net_worth
+  Net Worth:
+  = Account.net_worth.format
+
 %p
   - if @show_all
     = link_to 'hide empty', accounts_path
