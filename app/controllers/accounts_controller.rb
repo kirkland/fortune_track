@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   def index
-    @accounts = ['Assets', 'Liability', 'Equity'].collect do |full_name|
+    @accounts = ['Assets', 'Liabilities', 'Equity'].collect do |full_name|
       Account.find_by_full_name full_name
     end
     @show_all = params[:show_all].present?
