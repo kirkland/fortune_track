@@ -6,7 +6,7 @@ module Report
 
     def initialize
       @start_date = Date.new 2013, 2, 1
-      @end_date = Transaction.first.date
+      @end_date = Transaction.first.date + 1.month
       @report_rows = []
     end
 
