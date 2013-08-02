@@ -11,7 +11,7 @@ module Report
     end
 
     def run
-      @report_rows = (@start_date..@end_date + 1.day).collect do |date|
+      @report_rows = (@start_date..@end_date + 1.month).collect do |date|
         puts "Calculating for #{date}..."
 
         asset_lis = LineItem.includes(:transaction).where('transactions.date < ?', date)
