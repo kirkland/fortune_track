@@ -99,6 +99,5 @@ module AccountImporters
     def default_data_filename
       File.join(Rails.root, 'notes/sample_data/capital_one.html')
     end
-
   end
 end

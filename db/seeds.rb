@@ -19,10 +19,3 @@ end
 
 data = YAML.load(File.read(File.join(Rails.root, 'db/initial_accounts.yml')))
 data.each { |x| create_accounts(x) }
-
-if Rails.env.development?
-  ['CapitalOneImporter', 'BankOfAmericaImporter', 'ChaseImporter', 'IngDirectImporter']
-    .each do |class_name|
-    "AccountImporters::#{class_name}".constantize.new.read_and_create_transactions
-  end
-end
