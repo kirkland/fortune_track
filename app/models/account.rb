@@ -8,6 +8,8 @@ class Account < ActiveRecord::Base
   has_many :line_items
   has_many :transactions, through: :line_items
 
+  # Validations
+  validates :full_name, uniqueness: true
   validate :no_parent_cycle
 
   before_save :update_related_full_names!
