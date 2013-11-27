@@ -1,0 +1,15 @@
+========== 2013-01-18 ==========
+
+Generally speaking, a report is just a subset of accounts, with their line items summed up over some
+period of time. A balance sheet is a special case where the start date is the beginning of time.
+
+To generate a report, need:
+-- A list of accounts, or method to generate list.
+-- Start date (none if balance sheet).
+-- End date.
+
+Display options:
+-- Should accounts show their transaction totals only, or include children's as well?
+-- Percentage of total.
+-- Percent of parent and siblings total.
+
