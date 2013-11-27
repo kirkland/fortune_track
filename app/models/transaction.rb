@@ -1,18 +1,22 @@
 class Transaction < ActiveRecord::Base
+  # Attributes
   attr_accessible  :description, :date, :duplicate_transaction_id
 
+  # Associations
   has_many :line_items, dependent: :destroy, inverse_of: :transaction, order: 'line_items.id ASC',
     autosave: true
 
   # The record with duplicate_transaction_id populated is the duplicate, and will be ignored.
   belongs_to :duplicate_transaction, class_name: 'Transaction'
 
+  # Validations
   validate :debits_equals_credits
   validate :validates_has_line_item
   validates :date, presence: true
 
   after_save :delete_empty_line_items
 
+  # Scopes
   default_scope where('duplicate_transaction_id IS NULL').order('date DESC')
 
   # Changing how unique_code is calculated for CapOne, so need to update existing ones.
@@ -22,6 +26,18 @@ class Transaction < ActiveRecord::Base
       split = old.split(':') rescue ['a', 'b', 'c', 'd']
       t.unique_code = %{#{split[0]}:#{split[1]}:#{split[3]}}
       t.save!
+    end
+  end
+
+  def debit_line_items
+    line_items.select do |line_item|
+      line_item.debit_amount > 0
+    end
+  end
+
+  def credit_line_items
+    line_items.select do |line_item|
+      line_item.credit_amount > 0
     end
   end
 
