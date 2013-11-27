@@ -4,8 +4,8 @@ common: &common
   min_messages: warning
   reconnect: true
   pool: 5
-  username: postgres
-  password: postgres
+  username: rob
+  password: rob
 
 development:
   <<: *common
