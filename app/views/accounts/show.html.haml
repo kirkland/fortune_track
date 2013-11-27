@@ -4,6 +4,18 @@
   = @account.natural_balance.format
 %p= link_to 'Edit Account', edit_account_path(@account)
 
+- @transactions.each do |transaction|
+  .transaction
+    .date= transaction.date
+    - transaction.debit_line_items.each do |line_item|
+      .debit_line_item
+        .account_name= line_item.account.full_name
+        .amount= line_item.debit.format
+    - transaction.credit_line_items.each do |line_item|
+      .credit_line_item
+        .account_name= line_item.account.full_name
+        .amount= line_item.credit.format
+
 .transactions
   %table.main
     %tr
