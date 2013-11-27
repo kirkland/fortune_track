@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'ap'
 gem 'awesome_print'
 gem 'capistrano'
 gem 'crack'
