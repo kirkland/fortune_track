@@ -11,11 +11,13 @@
       .debit_line_item
         .account_name= line_item.account.full_name
         .amount= line_item.debit.format
+      .clear
     - transaction.credit_line_items.each do |line_item|
       .credit_line_item
         .account_name= line_item.account.full_name
         .amount= line_item.credit.format
-    .clear
+      .clear
+  .clear
 
 .transactions
   %table.main
