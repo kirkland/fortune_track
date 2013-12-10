@@ -103,6 +103,12 @@ form
     width: 120px
   .line_items
     border: 1px black solid
+    > div
+      border-top: 1px black dashed
+      &:hover
+        background-color: lighten(yellow, 30%)
+      &:first-child
+        border-top: none
     .debit_line_item
       position: relative
       .account_name
@@ -110,7 +116,7 @@ form
         width: 500px
       .amount
         position: absolute
-        left: 505px
+        right: 120px
         top: 0
       div
         line-height: 26px
@@ -121,7 +127,7 @@ form
         width: 500px
       .amount
         position: absolute
-        left: 605px
+        right: 20px
         top: 0
       div
         line-height: 26px
