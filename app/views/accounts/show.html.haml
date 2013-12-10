@@ -7,6 +7,7 @@
 - @transactions.each do |transaction|
   .transaction
     .date= transaction.date
+    .description= transaction_description(transaction)
     .line_items
       - transaction.debit_line_items.each do |line_item|
         .debit_line_item
@@ -16,18 +17,3 @@
         .credit_line_item
           .account_name= line_item.account.full_name
           .amount= line_item.credit.format
-
-.transactions
-  %table.main
-    %tr
-      %th Description
-      %th Line Items
-    %tr
-      %th
-      %th
-        %table.line_items_header
-          %tr
-            %th Account
-            %th Debit
-            %th Credit
-    = render partial: 'transactions/transaction', collection: @transactions
