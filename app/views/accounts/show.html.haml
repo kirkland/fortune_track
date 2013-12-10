@@ -8,6 +8,7 @@
   .transaction
     .date= transaction.date
     .description= transaction_description(transaction)
+    .edit= link_to 'Edit', edit_transaction_path(transaction)
     .line_items
       - transaction.debit_line_items.each do |line_item|
         .debit_line_item
