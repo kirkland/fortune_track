@@ -12,9 +12,9 @@
     .line_items
       - transaction.debit_line_items.each do |line_item|
         .debit_line_item
-          .account_name= line_item.account.full_name
+          .account_name= account_name(line_item.account)
           .amount= line_item.debit.format
       - transaction.credit_line_items.each do |line_item|
         .credit_line_item
-          .account_name= line_item.account.full_name
+          .account_name= account_name(line_item.account)
           .amount= line_item.credit.format
