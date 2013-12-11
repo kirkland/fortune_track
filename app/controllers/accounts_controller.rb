@@ -28,12 +28,7 @@ class AccountsController < ApplicationController
   def show
     @account = Account.find(params[:id])
     @transactions = @account.transactions
-    if params[:start_date].present?
-      @transactions = @transactions.where('date >= ?', params[:start_date])
-    end
-    if params[:end_date].present?
-      @transactions = @transactions.where('date <= ?', params[:end_date])
-    end
+    apply_date_filters
   end
 
   def update
@@ -43,6 +38,18 @@ class AccountsController < ApplicationController
       redirect_to accounts_path, notice: 'Account was successfully updated.'
     else
       render action: "edit"
+    end
+  end
+
+  private
+
+  def apply_date_filters
+    if params[:start_date].present?
+      @transactions = @transactions.where('date >= ?', params[:start_date])
+    end
+
+    if params[:end_date].present?
+      @transactions = @transactions.where('date <= ?', params[:end_date])
     end
   end
 end
