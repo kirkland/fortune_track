@@ -1,7 +1,7 @@
 PersonalAccounting::Application.routes.draw do
   resources :accounts, except: [:destroy]
 
-  resources :transactions, except: [:destroy] do
+  resources :transactions, except: [:destroy, :index] do
     collection do
       get :new_cash
       post :create_cash

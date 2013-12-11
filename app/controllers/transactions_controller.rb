@@ -1,12 +1,4 @@
 class TransactionsController < ApplicationController
-  def index
-    @transactions = Transaction.all
-
-    if params[:account_id].present?
-      @transactions = Account.find(params[:account_id]).transactions
-    end
-  end
-
   def edit
     @transaction = Transaction.find(params[:id])
   end
