@@ -9,6 +9,11 @@ module TransactionsHelper
     end
   end
 
+  def near_transactions_link(line_item)
+    link_to 'Nearby Transactions',
+      account_path(line_item.account, near_transaction_id: line_item.transaction_id)
+  end
+
   # TODO: Truncate to reasonable length, add elipsis, add 'expand' link
   def transaction_description(transaction)
     transaction.description.presence || '(no description)'

@@ -5,7 +5,7 @@
 %p= link_to 'Edit Account', edit_account_path(@account)
 
 - @transactions.each do |transaction|
-  .transaction
+  .transaction{id: transaction == @focused_transaction ? 'focused_transaction' : nil}
     .date= transaction.date
     .description= transaction_description(transaction)
     .edit= link_to 'Edit', edit_transaction_path(transaction)
@@ -13,8 +13,10 @@
       - transaction.debit_line_items.each do |line_item|
         .debit_line_item
           .account_name= account_name(line_item.account)
+          .near_transactions= near_transactions_link(line_item)
           .amount= line_item.debit.format
       - transaction.credit_line_items.each do |line_item|
         .credit_line_item
           .account_name= account_name(line_item.account)
+          .near_transactions= near_transactions_link(line_item)
           .amount= line_item.credit.format

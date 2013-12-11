@@ -19,8 +19,7 @@ class Account < ActiveRecord::Base
   money :debit_total
   money :credit_total
 
-  # Basic balances.
-
+  # Basic balances
   def calculate_debit_total
     self.debit_total = line_items.all.sum(&:debit).to_money
   end

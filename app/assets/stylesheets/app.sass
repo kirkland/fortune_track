@@ -46,6 +46,8 @@ th
     &.line_items, &.line_items_header
       td, th
         width: 33%
+#focused_transaction
+  border: 5px yellow dashed
 
 #net_worth
   float: left
@@ -116,6 +118,11 @@ form
       .account_name
         padding-left: 5px
         width: 500px
+      .near_transactions
+        position: absolute
+        top: 0
+        right: 400px
+        display: none
       .amount
         position: absolute
         right: 120px
@@ -127,6 +134,11 @@ form
       .account_name
         padding-left: 105px
         width: 500px
+      .near_transactions
+        position: absolute
+        top: 0
+        right: 400px
+        display: none
       .amount
         position: absolute
         right: 20px
@@ -148,6 +160,8 @@ form
   &:hover
     .edit
       display: block
+    .near_transactions
+      display: block !important
 
 #recent_imports
   thead

@@ -27,8 +27,13 @@ class AccountsController < ApplicationController
 
   def show
     @account = Account.find(params[:id])
-    @transactions = @account.transactions
-    apply_date_filters
+
+    if params[:near_transaction_id]
+      apply_near_condition
+    else
+      @transactions = @account.transactions
+      apply_date_filters
+    end
   end
 
   def update
@@ -44,12 +49,28 @@ class AccountsController < ApplicationController
   private
 
   def apply_date_filters
-    if params[:start_date].present?
+    if params[:start_date]
       @transactions = @transactions.where('date >= ?', params[:start_date])
     end
 
-    if params[:end_date].present?
+    if params[:end_date]
       @transactions = @transactions.where('date <= ?', params[:end_date])
     end
+  end
+
+  # Given a transaction ID, show a page with it in the middle, and roughly 10 above and below it.
+  def apply_near_condition
+    @focused_transaction = Transaction.find(params[:near_transaction_id])
+
+    more_recent_transactions = @account.transactions.
+      where('date >= ?', @focused_transaction.date).
+      order('date ASC').limit(10)
+
+    less_recent_transactions = @account.transactions.
+      where('date <= ?', @focused_transaction.date).
+      order('date DESC').limit(10)
+
+    @transactions = ([@focused_transaction] + more_recent_transactions +
+      less_recent_transactions).sort_by(&:date).reverse.uniq
   end
 end
