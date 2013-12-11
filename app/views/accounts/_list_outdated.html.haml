@@ -1,0 +1,14 @@
+- if outdated = AccountImport.outdated
+  #recent_imports
+    %strong
+      Outdated Accounts:
+    %table
+      %thead
+        %tr
+          %td Importer
+          %td Last Imported
+      %tbody
+        - outdated.each do |key, value|
+          %tr
+            %td= key
+            %td= value.strftime("%Y-%m-%d")
